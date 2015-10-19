@@ -10,6 +10,7 @@
 #include "Math.hpp"
 #include "Shape2DUtils.hpp"
 #include <iostream>
+#include <vector>
 #include "Thread.hpp"
 #include "Logger.hpp"
 #include "Client.hpp"
@@ -340,24 +341,37 @@ void MainFrameWindow::OnAbout( CommandEvent& UNUSEDPARAM(anEvent))
  */
 void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 {
-	Logger::log( "Attempting to start Thijs...");
+	Logger::log( "Attempting to start robots");
+	std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
+
+	for(auto robot : robots){
+		robot->startActing();
+	}
+
+	/*Logger::log( "Attempting to start Thijs...");
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
 	if (robot)
 	{
 		robot->startActing();
-	}
+	}*/
 }
 /**
  *
  */
 void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 {
-	Logger::log( "Attempting to stop Thijs...");
-	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
+
+	std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
+
+	for(auto robot : robots){
+		Logger::log( "Attempting to stop " + robot.get()->getName());
+		robot->stopActing();
+	}
+	/*RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
 	if (robot)
 	{
 		robot->stopActing();
-	}
+	}*/
 }
 /**
  *

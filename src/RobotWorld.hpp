@@ -109,7 +109,6 @@ class RobotWorld : 	public ModelObject
 		 *
 		 */
 		void unpopulate( bool aNotifyObservers = true);
-
 	protected:
 		/**
 		 *
