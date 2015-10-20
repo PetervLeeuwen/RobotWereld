@@ -15,6 +15,7 @@
 #include "Logger.hpp"
 #include "Client.hpp"
 #include "Message.hpp"
+#include <Windows.h>
 
 /**
  * IDs for the controls and the menu commands
@@ -287,6 +288,7 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 	                        [this](CommandEvent &anEvent){this->OnButton5Clicked(anEvent);}),
 	            GBPosition( 2, 0),
 	            GBSpan( 1, 1), EXPAND);
+
 	sizer->Add( makeButton( panel,
 	                        "Connect to server",
 	                        [this](CommandEvent &anEvent){this->OnButton6Clicked(anEvent);}),
@@ -339,7 +341,7 @@ void MainFrameWindow::OnAbout( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Start Robot Button
 {
 	std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
 
@@ -351,7 +353,7 @@ void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))// Stop Robot Button
 {
 
 	std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
@@ -364,27 +366,30 @@ void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate Button
 {
 	Logger::log( __PRETTY_FUNCTION__);
+	Logger::log("Populated world");
 
 	robotWorldCanvas->populate( 2);
 }
 /**
  *
  */
-void MainFrameWindow::OnButton4Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton4Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Unpopulate Button
 {
 	Logger::log( __PRETTY_FUNCTION__);
+	Logger::log("Unpopulated world");
 
 	robotWorldCanvas->unpopulate();
 }
 /**
  *
  */
-void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Start Coummunicating Button
 {
 	Logger::log( __PRETTY_FUNCTION__);
+	Logger::log("Start Communicating");
 
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
 	if (robot)
@@ -395,9 +400,10 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Connect to server button
 {
 	Logger::log( __PRETTY_FUNCTION__);
+	Logger::log("Connecting to Server....");
 
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
 	if (robot)
@@ -417,12 +423,18 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
 		MessageASIO::Message message( 1, "Hello world!");
 		c1ient.dispatchMessage( message);
+
+
+	}
+
+	if(system("ping localhost")){
+		Logger::log("Connection with server established");
 	}
 }
 /**
  *
  */
-void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Stop Communicating Button
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
