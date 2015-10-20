@@ -28,6 +28,9 @@ namespace MessageASIO
 			 */
 			void handleAccept( 	MessageASIO::ServerSession* aSession,
 								const boost::system::error_code& error);
+
+		boost::asio::io_service&& getIOService();
+
 		private:
 			// Provides core I/O functionality
 			// @see http://www.boost.org/doc/libs/1_40_0/doc/html/boost_asio/reference/io_service.html

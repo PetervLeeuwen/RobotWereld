@@ -426,10 +426,6 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Con
 
 
 	}
-
-	if(system("ping localhost")){
-		Logger::log("Connection with server established");
-	}
 }
 /**
  *

@@ -53,4 +53,8 @@ namespace MessageASIO
 			throw std::runtime_error( __PRETTY_FUNCTION__ + std::string( ": ") + error.message());
 		}
 	}
+
+	boost::asio::io_service&& getIOService(){
+		return io_service;
+	}
 }
