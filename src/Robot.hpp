@@ -185,11 +185,7 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
-		void calculate_path();
-		/**
-		 *
-		 */
-		void drive(GoalPtr goal);
+		void drive();
 		/**
 		 *
 		 */

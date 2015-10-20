@@ -144,7 +144,7 @@ void Robot::startActing()
 {
 	std::thread newRobotThread( [this]
 	{	stop = false; drive();});
-	//robotThread.swap( newRobotThread);
+	robotThread.swap( newRobotThread);
 }
 /**
  *
@@ -314,17 +314,10 @@ std::string Robot::asDebugString() const
 
 	return os.str();
 }
-
-void Robot::calculate_path(){
-	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
-	if(goal){
-		calculateRoute(goal);
-	}
-}
 /**
  *
  */
-void Robot::drive(GoalPtr aGoal)
+void Robot::drive()
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -335,12 +328,13 @@ void Robot::drive(GoalPtr aGoal)
 			//sensor->setOn();
 		}
 
-		calculate_path();
-
 		if (speed == 0.0)
 		{
 			speed = 10.0;
 		}
+
+		GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+		calculateRoute(goal);
 
 		unsigned pathPoint = 0;
 		while (position.x > 0 && position.x < 500 && position.y > 0 && position.y < 500 && pathPoint < path.size())
@@ -350,7 +344,7 @@ void Robot::drive(GoalPtr aGoal)
 			position.x = vertex.x;
 			position.y = vertex.y;
 
-			if (arrived(aGoal) || collision())
+			if (arrived(goal) || collision())
 			{
 				notifyObservers();
 				break;
@@ -358,7 +352,7 @@ void Robot::drive(GoalPtr aGoal)
 
 			notifyObservers();
 
-			std::this_thread::sleep_for( std::chrono::milliseconds( 50));
+			std::this_thread::sleep_for( std::chrono::milliseconds( 100));
 
 			// this should be either the last call in the loop or
 			// part of the while.
