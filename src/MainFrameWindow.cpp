@@ -341,19 +341,12 @@ void MainFrameWindow::OnAbout( CommandEvent& UNUSEDPARAM(anEvent))
  */
 void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 {
-	Logger::log( "Attempting to start robots");
 	std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
 
 	for(auto robot : robots){
+		Logger::log( "Attempting to start " + robot.get()->getName());
 		robot->startActing();
 	}
-
-	/*Logger::log( "Attempting to start Thijs...");
-	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
-	if (robot)
-	{
-		robot->startActing();
-	}*/
 }
 /**
  *
@@ -367,11 +360,6 @@ void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 		Logger::log( "Attempting to stop " + robot.get()->getName());
 		robot->stopActing();
 	}
-	/*RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
-	if (robot)
-	{
-		robot->stopActing();
-	}*/
 }
 /**
  *

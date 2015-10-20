@@ -232,7 +232,8 @@ const std::vector< WallPtr >& RobotWorld::getWalls() const
  */
 void RobotWorld::populate( int aNumberOfWalls /*= 2*/)
 {
-	RobotWorld::getRobotWorld().newRobot( "Thijs", Point( 50, 50),false);
+	RobotWorld::getRobotWorld().newRobot( "Thomas", Point( 50, 50),false);
+	RobotWorld::getRobotWorld().newRobot( "Peter", Point( 50, 50),false);
 
 	static Point coordinates[] = { Point( 100, 400), Point( 350, 300),
 	Point( 300, 100),

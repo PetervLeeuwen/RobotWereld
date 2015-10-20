@@ -352,7 +352,7 @@ void Robot::drive()
 
 			notifyObservers();
 
-			std::this_thread::sleep_for( std::chrono::milliseconds( 50));
+			//std::this_thread::sleep_for( std::chrono::milliseconds( 50));
 
 			// this should be either the last call in the loop or
 			// part of the while.
