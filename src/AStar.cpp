@@ -4,6 +4,7 @@
 #include "RobotWorld.hpp"
 #include "Wall.hpp"
 #include "Shape2DUtils.hpp"
+#include "Logger.hpp"
 
 /**
  *
@@ -433,6 +434,12 @@ VertexMap& AStar::getPM()
 	std::unique_lock< std::recursive_mutex > lock( predecessorMapMutex);
 	return predecessorMap;
 }
+
+AStar::AStar()
+{
+	Logger::log("new Instance of Astar");
+}
+
 /**
  *
  */

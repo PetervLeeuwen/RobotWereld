@@ -177,6 +177,7 @@ class AStar : public Notifier
 		/**
 		 *
 		 */
+		AStar();
 		std::vector< Vertex > search(	const Point& aStartPoint,
 										const Point& aGoalPoint,
 										const Size& aRobotSize);
