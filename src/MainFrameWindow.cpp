@@ -290,7 +290,7 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 	            GBSpan( 1, 1), EXPAND);
 
 	sizer->Add( makeButton( panel,
-	                        "Connect to server",
+	                        "Say the words",
 	                        [this](CommandEvent &anEvent){this->OnButton6Clicked(anEvent);}),
 	            GBPosition( 2, 1),
 	            GBSpan( 1, 1), EXPAND);
