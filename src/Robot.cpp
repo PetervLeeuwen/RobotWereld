@@ -143,7 +143,7 @@ void Robot::setSpeed( float aNewSpeed)
 void Robot::startActing()
 {
 	std::thread newRobotThread( [this]
-	{	stop = false; drive();});
+	{	stop = false;});
 	//robotThread.swap( newRobotThread);
 }
 /**
@@ -154,6 +154,23 @@ void Robot::stopActing()
 	//robotThread.interrupt();
 	stop = true;
 	robotThread.join();
+}
+/**
+ *
+ */
+void Robot::calculatePath()
+{
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	calculateRoute(goal);
+}
+/**
+ *
+ */
+void Robot::startMoving()
+{
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	std::thread newRobotThread( [this,goal]
+	{	drive(goal);});
 }
 /**
  *
@@ -317,7 +334,7 @@ std::string Robot::asDebugString() const
 /**
  *
  */
-void Robot::drive()
+void Robot::drive(GoalPtr goal)
 {
 	try
 	{
@@ -331,9 +348,6 @@ void Robot::drive()
 		{
 			speed = 10.0;
 		}
-
-		GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
-		calculateRoute(goal);
 
 		unsigned pathPoint = 0;
 		while (position.x > 0 && position.x < 500 && position.y > 0 && position.y < 500 && pathPoint < path.size())

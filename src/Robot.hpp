@@ -161,6 +161,14 @@ class Robot :	public AbstractAgent,
 		 */
 		void stopCommunicating();
 		/**
+		 *
+		 */
+		void calculatePath();
+		/**
+		 *
+		 */
+		void startMoving();
+		/**
 		 * If a request is handled, any response *must* be set in the Message argument!
 		 */
 		virtual void handleRequest( MessageASIO::Message& aMessage);
@@ -185,7 +193,7 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
-		void drive();
+		void drive(GoalPtr goal);
 		/**
 		 *
 		 */

@@ -269,12 +269,13 @@ void RobotWorld::unpopulate( bool aNotifyObservers /*= true*/)
 void RobotWorld::startActing()
 {
 	for(auto robot : robots){
-		Logger::log( "Attempting to start " + robot.get()->getName());
+		Logger::log( "Calculate path for: " + robot.get()->getName());
 		robot->startActing();
+		robot->calculatePath();
 	}
 	for(auto robot : robots){
-		Logger::log( "Attempting to stop " + robot.get()->getName());
-		robot->stopActing();
+		Logger::log( "Starting robot: " + robot.get()->getName());
+		robot->startMoving();
 	}
 }
 /**
