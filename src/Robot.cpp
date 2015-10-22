@@ -26,10 +26,8 @@ Robot::Robot( const std::string& aName) :
 				stop(true),
 				communicating(false)
 {
-	std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-	attachSensor( laserSensor);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 
-//	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -45,10 +43,10 @@ Robot::Robot(	const std::string& aName,
 				stop(true),
 				communicating(false)
 {
-	std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-	attachSensor( laserSensor);
+	//std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
+	//attachSensor( laserSensor);
 
-//	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	//attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -341,7 +339,8 @@ void Robot::drive(GoalPtr goal)
 		Logger::log( __PRETTY_FUNCTION__);
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
-			//sensor->setOn();
+			sensor->setOn();
+			sensor->run(15);
 		}
 
 		if (speed == 0.0)
@@ -377,7 +376,7 @@ void Robot::drive(GoalPtr goal)
 
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
-			//sensor->setOff();
+			sensor->setOff();
 		}
 	}
 	catch (std::exception& e)
