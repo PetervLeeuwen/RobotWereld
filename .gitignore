@@ -1,2 +1,6 @@
 src/Makefile.am
 src/Makefile.in
+src/config.h.in
+src/config.h.in~
+src/config.h.in
+src/config.h.in
