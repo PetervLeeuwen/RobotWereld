@@ -109,6 +109,14 @@ class RobotWorld : 	public ModelObject
 		 *
 		 */
 		void unpopulate( bool aNotifyObservers = true);
+		/**
+		 *
+		 */
+		void startActing();
+		/**
+		 *
+		 */
+		void stopActing();
 	protected:
 		/**
 		 *

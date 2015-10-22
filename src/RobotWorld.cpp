@@ -263,7 +263,30 @@ void RobotWorld::unpopulate( bool aNotifyObservers /*= true*/)
 		notifyObservers();
 	}
 }
-
+/**
+ *
+ */
+void RobotWorld::startActing()
+{
+	for(auto robot : robots){
+		Logger::log( "Attempting to start " + robot.get()->getName());
+		robot->startActing();
+	}
+	for(auto robot : robots){
+		Logger::log( "Attempting to stop " + robot.get()->getName());
+		robot->stopActing();
+	}
+}
+/**
+ *
+ */
+void RobotWorld::stopActing()
+{
+	for(auto robot : robots){
+		Logger::log( "Attempting to stop " + robot.get()->getName());
+		robot->stopActing();
+	}
+}
 /**
  *
  */
@@ -279,4 +302,5 @@ RobotWorld::~RobotWorld()
 	disableNotification();
 	unpopulate();
 }
+
 

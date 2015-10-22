@@ -248,7 +248,7 @@ Point Robot::getBackRight() const
  */
 void Robot::handleNotification()
 {
-//	std::unique_lock<std::recursive_mutex> lock(robotMutex);
+	std::unique_lock<std::recursive_mutex> lock(robotMutex);
 
 	static int update = 0;
 	if ((++update % 200) == 0)
@@ -319,10 +319,9 @@ std::string Robot::asDebugString() const
  */
 void Robot::drive()
 {
-	Logger::log( __PRETTY_FUNCTION__);
-
 	try
 	{
+		Logger::log( __PRETTY_FUNCTION__);
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
 			//sensor->setOn();
