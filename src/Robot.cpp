@@ -263,14 +263,14 @@ void Robot::handleNotification()
 void Robot::startCommunicating()
 {
 	communicating = true;
-	CommunicationService::getCommunicationService().runRobotServer( this);
+	CommunicationService::getCommunicationService().runRobotServer(this, port);
 }
 /**
  *
  */
 void Robot::stopCommunicating()
 {
-	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), "localhost", "12345", shared_from_this());
+	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), address, port, shared_from_this());
 	MessageASIO::Message message( 1, "stop");
 	c1ient.dispatchMessage( message);
 	communicating = false;
