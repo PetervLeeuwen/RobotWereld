@@ -82,6 +82,14 @@ public:
 	/**
 	 *
 	 */
+	GoalPtr getGoal() const;
+	/**
+	 *
+	 */
+	GoalPtr getRobot() const;
+	/**
+	 *
+	 */
 	const std::vector<RobotPtr>& getRobots() const;
 	/**
 	 *

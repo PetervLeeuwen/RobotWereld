@@ -26,7 +26,7 @@ Robot::Robot( const std::string& aName) :
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				type("origin")
+				original(true)
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 
@@ -44,7 +44,7 @@ Robot::Robot(	const std::string& aName,
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				type("origin")
+				original(true)
 {
 	//std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 	//attachSensor( laserSensor);
@@ -161,7 +161,7 @@ void Robot::stopActing()
  */
 void Robot::calculatePath()
 {
-	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoal();
 	calculateRoute(goal);
 }
 /**
@@ -169,7 +169,7 @@ void Robot::calculatePath()
  */
 void Robot::startMoving()
 {
-	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoal();
 	std::thread newRobotThread( [this,goal]
 	{	drive(goal);});
 }

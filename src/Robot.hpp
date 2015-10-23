@@ -188,6 +188,9 @@ class Robot :	public AbstractAgent,
 		 * Returns a description of the object with all data of the object usable for debugging
 		 */
 		virtual std::string asDebugString() const;
+
+		bool original;
+
 		//@}
 	protected:
 		/**
@@ -208,7 +211,6 @@ class Robot :	public AbstractAgent,
 		bool collision();
 	private:
 		std::string name;
-		std::string type;
 
 		Size size;
 		Point position;
