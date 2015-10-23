@@ -86,7 +86,7 @@ public:
 	/**
 	 *
 	 */
-	GoalPtr getRobot() const;
+	RobotPtr getRobot() const;
 	/**
 	 *
 	 */
