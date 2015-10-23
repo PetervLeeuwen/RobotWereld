@@ -15,6 +15,10 @@
 #include"Logger.hpp"
 #include "ConfigFile.hpp"
 
+
+ConfigFile::ConfigFile(){
+}
+
 ConfigFile::ConfigFile(std::string aFile):
 	file(aFile)
 {

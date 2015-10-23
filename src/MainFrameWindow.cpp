@@ -391,8 +391,8 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
 	if (robot)
 	{
-		std::string remoteIpAdres = "localhost";
-		std::string remotePort = "12345";
+		std::string remoteIpAdres = robot.get()->getFile().getIpaddress();
+		std::string remotePort = robot.get()->getFile().getPort();
 
 		if (MainApplication::isArgGiven( "-ip"))
 		{

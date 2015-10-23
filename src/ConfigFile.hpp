@@ -15,6 +15,7 @@
 class ConfigFile {
 
 public:
+	ConfigFile();
 	ConfigFile(std::string file);
 	virtual ~ConfigFile();
 

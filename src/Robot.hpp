@@ -12,8 +12,10 @@
 #include "Vector.hpp"
 #include "AStar.hpp"
 #include "Widgets.hpp"
+#include "ConfigFile.hpp"
 
 #include <vector>
+#include <iostream>
 #include "Thread.hpp"
 
 namespace MessageASIO
@@ -188,6 +190,9 @@ class Robot :	public AbstractAgent,
 		 * Returns a description of the object with all data of the object usable for debugging
 		 */
 		virtual std::string asDebugString() const;
+
+		const ConfigFile& getFile() const;
+
 		//@}
 	protected:
 		/**
@@ -225,8 +230,11 @@ class Robot :	public AbstractAgent,
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
 
-		std::string port = "12345";
-		std::string address = "localhost";
+		std::string port;
+		std::string address;
+
+		ConfigFile file;
+
 };
 
 #endif // ROBOT_HPP_
