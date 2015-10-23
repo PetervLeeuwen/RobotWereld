@@ -38,7 +38,7 @@ void AbstractSensor::setOn( unsigned long aSleepTime /*= 100*/)
 	{
 		running = true;
 		std::thread newSensorThread( [this, aSleepTime]
-		{	run(aSleepTime);});
+		{	run(aSleepTime); });
 		sensorThread.swap( newSensorThread);
 	}
 }
@@ -72,7 +72,6 @@ void AbstractSensor::run( unsigned long aSleepTime)
 			std::shared_ptr< AbstractStimulus > currentStimulus = getStimulus();
 			std::shared_ptr< AbstractPercept > currentPercept = getPerceptFor( currentStimulus);
 			sendPercept( currentPercept);
-
 //			std::this_thread::sleep_for( std::chrono::milliseconds( aSleepTime));
 
 
@@ -91,6 +90,16 @@ void AbstractSensor::run( unsigned long aSleepTime)
 	catch (...)
 	{
 		std::cerr << __PRETTY_FUNCTION__ << ": unknown exception" << std::endl;
+	}
+}
+/**
+ *
+ */
+void AbstractSensor::check()
+{
+	while(running == true)
+	{
+		agent->check();
 	}
 }
 /**

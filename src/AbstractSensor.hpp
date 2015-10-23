@@ -75,6 +75,10 @@ class AbstractSensor
 		/**
 		 *
 		 */
+		virtual void check();
+		/**
+		 *
+		 */
 		virtual void attachAgent( AbstractAgent* anAgent);
 		/**
 		 *

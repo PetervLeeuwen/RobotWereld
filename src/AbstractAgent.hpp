@@ -41,6 +41,7 @@ class AbstractAgent : public ModelObject
 		/**
 		 *
 		 */
+		virtual void check();
 		virtual void startActing() = 0;
 		/**
 		 *

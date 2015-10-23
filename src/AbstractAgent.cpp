@@ -49,6 +49,14 @@ void AbstractAgent::addPercept( std::shared_ptr< AbstractPercept > aPercept)
 /**
  *
  */
+void AbstractAgent::check()
+{
+	std::shared_ptr<AbstractPercept> percept = perceptQueue.dequeue();
+	Logger::log("checked a percept");
+}
+/**
+ *
+ */
 std::string AbstractAgent::asString() const
 {
 	std::ostringstream os;
