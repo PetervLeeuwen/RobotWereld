@@ -339,8 +339,8 @@ void Robot::drive(GoalPtr goal)
 		Logger::log( __PRETTY_FUNCTION__);
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
+			//enables and starts sensor.
 			sensor->setOn();
-			sensor->run(15);
 		}
 
 		if (speed == 0.0)
