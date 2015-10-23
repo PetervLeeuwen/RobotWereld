@@ -7,7 +7,8 @@
  *
  */
 Goal::Goal( const std::string& aName) :
-				WayPoint( aName)
+				WayPoint( aName),
+				original(true)
 {
 }
 /**
@@ -15,7 +16,8 @@ Goal::Goal( const std::string& aName) :
  */
 Goal::Goal( const std::string& aName,
 			const Point& aPosition) :
-				WayPoint( aName, aPosition)
+				WayPoint( aName, aPosition),
+				original(true)
 {
 }
 /**

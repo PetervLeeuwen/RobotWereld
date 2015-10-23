@@ -26,8 +26,12 @@ Robot::Robot( const std::string& aName) :
 				speed( 0.0),
 				stop(true),
 				communicating(false),
+<<<<<<< HEAD
 				type("origin"),
 				file("config.txt")
+=======
+				original(true)
+>>>>>>> refs/remotes/origin/Multiple-Robots
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 	file.loadFile();
@@ -46,7 +50,7 @@ Robot::Robot(	const std::string& aName,
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				type("origin")
+				original(true)
 {
 	//std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 	//attachSensor( laserSensor);
@@ -163,7 +167,7 @@ void Robot::stopActing()
  */
 void Robot::calculatePath()
 {
-	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoal();
 	calculateRoute(goal);
 }
 /**
@@ -171,7 +175,7 @@ void Robot::calculatePath()
  */
 void Robot::startMoving()
 {
-	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoal();
 	std::thread newRobotThread( [this,goal]
 	{	drive(goal);});
 }

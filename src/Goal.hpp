@@ -36,6 +36,10 @@ class Goal : public WayPoint
 		 * Returns a description of the object with all data of the object usable for debugging
 		 */
 		virtual std::string asDebugString() const;
+		/**
+		 *
+		 */
+		bool original;
 		//@}
 	protected:
 

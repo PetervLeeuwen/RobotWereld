@@ -191,7 +191,11 @@ class Robot :	public AbstractAgent,
 		 */
 		virtual std::string asDebugString() const;
 
+<<<<<<< HEAD
 		const ConfigFile& getFile() const;
+=======
+		bool original;
+>>>>>>> refs/remotes/origin/Multiple-Robots
 
 		//@}
 	protected:
@@ -213,7 +217,6 @@ class Robot :	public AbstractAgent,
 		bool collision();
 	private:
 		std::string name;
-		std::string type;
 
 		Size size;
 		Point position;

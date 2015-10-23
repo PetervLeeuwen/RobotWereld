@@ -268,14 +268,22 @@ void RobotWorld::unpopulate( bool aNotifyObservers /*= true*/)
  */
 void RobotWorld::startActing()
 {
-	for(auto robot : robots){
-		Logger::log( "Calculate path for: " + robot.get()->getName());
-		robot->startActing();
-		robot->calculatePath();
+	for(auto robot : robots)
+	{
+		if(robot.get()->original)
+		{
+			Logger::log( "Calculate path for: " + robot.get()->getName());
+			robot->startActing();
+			robot->calculatePath();
+		}
 	}
-	for(auto robot : robots){
-		Logger::log( "Starting robot: " + robot.get()->getName());
-		robot->startMoving();
+	for(auto robot : robots)
+	{
+		if(robot.get()->original)
+		{
+			Logger::log( "Starting robot: " + robot.get()->getName());
+			robot->startMoving();
+		}
 	}
 }
 /**
@@ -283,9 +291,13 @@ void RobotWorld::startActing()
  */
 void RobotWorld::stopActing()
 {
-	for(auto robot : robots){
-		Logger::log( "Attempting to stop " + robot.get()->getName());
-		robot->stopActing();
+	for(auto robot : robots)
+	{
+		if(robot.get()->original)
+		{
+			Logger::log( "Attempting to stop " + robot.get()->getName());
+			robot->stopActing();
+		}
 	}
 }
 /**
@@ -315,6 +327,7 @@ void RobotWorld::receiveRobotData(std::vector<RobotPtr> aRobot,
 {
 	for(auto robot : aRobot)
 	{
+		robot.get()->original = false;
 		robots.push_back(robot);
 	}
 	for(auto wayPoint : aWayPoint)
@@ -323,10 +336,33 @@ void RobotWorld::receiveRobotData(std::vector<RobotPtr> aRobot,
 	}
 	for(auto goal : aGoal)
 	{
+		goal.get()->original = false;
 		goals.push_back(goal);
 	}
 	for(auto wall : aWall)
 	{
 		walls.push_back(wall);
 	}
+}
+
+GoalPtr RobotWorld::getGoal() const
+{
+	for(GoalPtr goal : goals)
+	{
+		if(goal.get()->original){
+			return goal;
+		}
+	}
+	return nullptr;
+}
+
+GoalPtr RobotWorld::getRobot() const
+{
+	for(GoalPtr robot : robots)
+	{
+		if(robot.get()->original){
+			return robot;
+		}
+	}
+	return nullptr;
 }
