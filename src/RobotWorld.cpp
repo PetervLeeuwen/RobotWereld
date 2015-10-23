@@ -232,7 +232,8 @@ const std::vector< WallPtr >& RobotWorld::getWalls() const
  */
 void RobotWorld::populate( int aNumberOfWalls /*= 2*/)
 {
-	RobotWorld::getRobotWorld().newRobot( "Thijs", Point( 50, 50),false);
+	RobotWorld::getRobotWorld().newRobot( "Peter", Point( 50, 50),false);
+	RobotWorld::getRobotWorld().newRobot( "Thomas", Point( 100, 50),false);
 
 	static Point coordinates[] = { Point( 100, 400), Point( 350, 300),
 	Point( 300, 100),
@@ -262,7 +263,31 @@ void RobotWorld::unpopulate( bool aNotifyObservers /*= true*/)
 		notifyObservers();
 	}
 }
-
+/**
+ *
+ */
+void RobotWorld::startActing()
+{
+	for(auto robot : robots){
+		Logger::log( "Calculate path for: " + robot.get()->getName());
+		robot->startActing();
+		robot->calculatePath();
+	}
+	for(auto robot : robots){
+		Logger::log( "Starting robot: " + robot.get()->getName());
+		robot->startMoving();
+	}
+}
+/**
+ *
+ */
+void RobotWorld::stopActing()
+{
+	for(auto robot : robots){
+		Logger::log( "Attempting to stop " + robot.get()->getName());
+		robot->stopActing();
+	}
+}
 /**
  *
  */
@@ -279,3 +304,29 @@ RobotWorld::~RobotWorld()
 	unpopulate();
 }
 
+void RobotWorld::sendRobotData()
+{
+
+}
+
+void RobotWorld::receiveRobotData(std::vector<RobotPtr> aRobot,
+		std::vector<WayPointPtr> aWayPoint, std::vector<GoalPtr> aGoal,
+		std::vector<WallPtr> aWall)
+{
+	for(auto robot : aRobot)
+	{
+		robots.push_back(robot);
+	}
+	for(auto wayPoint : aWayPoint)
+	{
+		wayPoints.push_back(wayPoint);
+	}
+	for(auto goal : aGoal)
+	{
+		goals.push_back(goal);
+	}
+	for(auto wall : aWall)
+	{
+		walls.push_back(wall);
+	}
+}

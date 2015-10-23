@@ -73,7 +73,7 @@ void AbstractSensor::run( unsigned long aSleepTime)
 			std::shared_ptr< AbstractPercept > currentPercept = getPerceptFor( currentStimulus);
 			sendPercept( currentPercept);
 
-			//std::this_thread::sleep_for( std::chrono::milliseconds( aSleepTime));
+//			std::this_thread::sleep_for( std::chrono::milliseconds( aSleepTime));
 
 
 			// this should be either the last call in the loop or

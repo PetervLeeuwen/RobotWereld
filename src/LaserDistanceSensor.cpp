@@ -33,7 +33,7 @@ LaserDistanceSensor::~LaserDistanceSensor()
  */
 std::shared_ptr< AbstractStimulus > LaserDistanceSensor::getStimulus()
 {
-	std::shared_ptr< AbstractStimulus > distanceStimulus( new DistanceStimulus( 666));
+	std::shared_ptr< AbstractStimulus > distanceStimulus( new DistanceStimulus( 15));
 	return distanceStimulus;
 }
 /**

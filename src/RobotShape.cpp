@@ -1,11 +1,13 @@
 #include "RobotShape.hpp"
 #include <cmath>
+#include <math.h>
 #include "Notifier.hpp"
 #include "Robot.hpp"
 #include "Goal.hpp"
 #include "Logger.hpp"
 #include "RobotWorldCanvas.hpp"
 #include "RobotWorld.hpp"
+#include "Logger.hpp"
 
 /**
  *
@@ -143,13 +145,15 @@ void RobotShape::draw( wxDC& dc)
 	double angle = Shape2DUtils::getAngle( getRobot()->getFront()) + 0.5 * PI;
 
 	dc.SetPen( wxPen( WXSTRING( "BLACK"), 1, wxSOLID));
-	dc.DrawLine( centre.x, centre.y, centre.x + std::cos( angle - 0.5 * PI) * 25, centre.y + std::sin( angle - 0.5 * PI) * 25);
+	dc.DrawLine( centre.x, centre.y, centre.x + std::cos( angle - 0.5 * PI) * 50, centre.y + std::sin( angle - 0.5 * PI) * 50);
 
 	// Bounty of 0.25 points for anyone who makes the name turn
 	// with the front of the robot, while text centre being displayed in the
 	// centre of the robot, bottom of the text to the back of the robot.
-	dc.DrawRotatedText( WXSTRING( title), centre.x - titleSize.x / 2, centre.y - titleSize.y / 2, angle - PI);
-
+	Point rCentre = getRobot()->getPosition();
+	double r = std::sqrt((0.5 * titleSize.x)*(0.5 * titleSize.x) + (0.5 * titleSize.y)*(0.5 * titleSize.y));
+	dc.DrawRotatedText( WXSTRING(title), rCentre.x + (std::cos( angle - 0.5 * PI) * 0.25 * size.y) - r * std::cos(angle), rCentre.y + (std::sin( angle - 0.5 * PI) * 0.25 * size.y) - r * std::sin(angle), angle * (-180 / PI));
+	//Logger::log(title + " " + std::to_string(r) + " " + std::to_string(titleSize.x) + " " + std::to_string(titleSize.y));
 }
 /**
  *

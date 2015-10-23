@@ -8,6 +8,7 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#pragma GCC diagnostic ignored "-Wno-deprecated-declarations"
 
 // Needed for double Winsock inclusion problems with Boost/ASIO
 // See http://msdn.microsoft.com/en-us/library/ms737629%28VS.85%29.aspx

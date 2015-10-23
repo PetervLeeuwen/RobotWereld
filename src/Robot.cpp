@@ -25,12 +25,11 @@ Robot::Robot( const std::string& aName) :
 				front( 0, 0),
 				speed( 0.0),
 				stop(true),
-				communicating(false)
+				communicating(false),
+				type("origin")
 {
-	std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-	attachSensor( laserSensor);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 
-//	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -44,12 +43,13 @@ Robot::Robot(	const std::string& aName,
 				front( 0, 0),
 				speed( 0.0),
 				stop(true),
-				communicating(false)
+				communicating(false),
+				type("origin")
 {
-	std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-	attachSensor( laserSensor);
+	//std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
+	//attachSensor( laserSensor);
 
-//	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	//attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -144,7 +144,7 @@ void Robot::setSpeed( float aNewSpeed)
 void Robot::startActing()
 {
 	std::thread newRobotThread( [this]
-	{	stop = false; drive();});
+	{	stop = false;});
 	//robotThread.swap( newRobotThread);
 }
 /**
@@ -155,6 +155,23 @@ void Robot::stopActing()
 	//robotThread.interrupt();
 	stop = true;
 	robotThread.join();
+}
+/**
+ *
+ */
+void Robot::calculatePath()
+{
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	calculateRoute(goal);
+}
+/**
+ *
+ */
+void Robot::startMoving()
+{
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	std::thread newRobotThread( [this,goal]
+	{	drive(goal);});
 }
 /**
  *
@@ -249,7 +266,7 @@ Point Robot::getBackRight() const
  */
 void Robot::handleNotification()
 {
-//	std::unique_lock<std::recursive_mutex> lock(robotMutex);
+	std::unique_lock<std::recursive_mutex> lock(robotMutex);
 
 	static int update = 0;
 	if ((++update % 200) == 0)
@@ -320,24 +337,21 @@ std::string Robot::asDebugString() const
 /**
  *
  */
-void Robot::drive()
+void Robot::drive(GoalPtr goal)
 {
-	Logger::log( __PRETTY_FUNCTION__);
-
 	try
 	{
+		Logger::log( __PRETTY_FUNCTION__);
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
-			//sensor->setOn();
+			//enables and starts sensor.
+			sensor->setOn();
 		}
 
 		if (speed == 0.0)
 		{
 			speed = 10.0;
 		}
-
-		GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
-		calculateRoute(goal);
 
 		unsigned pathPoint = 0;
 		while (position.x > 0 && position.x < 500 && position.y > 0 && position.y < 500 && pathPoint < path.size())
@@ -367,7 +381,7 @@ void Robot::drive()
 
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
-			//sensor->setOff();
+			sensor->setOff();
 		}
 	}
 	catch (std::exception& e)
