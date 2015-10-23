@@ -79,13 +79,13 @@ class MainFrameWindow : public Frame
 		void OnStdOutDebugTraceFunction( CommandEvent& anEvent);
 		void OnAbout( CommandEvent& anEvent);
 
-		void OnButton1Clicked( CommandEvent& anEvent);
-		void OnButton2Clicked( CommandEvent& anEvent);
-		void OnButton3Clicked( CommandEvent& anEvent);
-		void OnButton4Clicked( CommandEvent& anEvent);
-		void OnButton5Clicked( CommandEvent& anEvent);
-		void OnButton6Clicked( CommandEvent& anEvent);
-		void OnButton7Clicked( CommandEvent& anEvent);
+		void OnButton1Clicked( CommandEvent& anEvent);//Start Robot
+		void OnButton2Clicked( CommandEvent& anEvent);//Stop Robot
+		void OnButton3Clicked( CommandEvent& anEvent);//Populate
+		void OnButton4Clicked( CommandEvent& anEvent);//Unpopulate
+		void OnButton5Clicked( CommandEvent& anEvent);//Start communicating
+		void OnButton6Clicked( CommandEvent& anEvent);//Say the words
+		void OnButton7Clicked( CommandEvent& anEvent);//Stop communicating
 };
 //	class MainFrameWindow
 

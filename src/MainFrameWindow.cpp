@@ -339,21 +339,21 @@ void MainFrameWindow::OnAbout( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Start Robot
 {
 	RobotWorld::getRobotWorld().startActing();
 }
 /**
  *
  */
-void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Stop Robot
 {
 	RobotWorld::getRobotWorld().stopActing();
 }
 /**
  *
  */
-void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -362,7 +362,7 @@ void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton4Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton4Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Unpopulate
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -371,7 +371,7 @@ void MainFrameWindow::OnButton4Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Start communicating
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -384,7 +384,7 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say the words
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -405,13 +405,14 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
 		MessageASIO::Message message( 1, "Hello world!");
+		Logger::log("hello world");
 		c1ient.dispatchMessage( message);
 	}
 }
 /**
  *
  */
-void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))
+void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Stop communicating
 {
 	Logger::log( __PRETTY_FUNCTION__);
 

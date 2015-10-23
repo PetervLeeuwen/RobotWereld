@@ -224,6 +224,9 @@ class Robot :	public AbstractAgent,
 
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
+
+		std::string port = "12345";
+		std::string address = "localhost";
 };
 
 #endif // ROBOT_HPP_
