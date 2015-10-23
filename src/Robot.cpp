@@ -26,12 +26,9 @@ Robot::Robot( const std::string& aName) :
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				type("origin"),
-				file("config.txt")
 				original(true)
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
-	file.loadFile();
 
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
@@ -291,7 +288,7 @@ void Robot::startCommunicating()
  */
 void Robot::stopCommunicating()
 {
-	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), file.getIpaddress(), file.getPort(), shared_from_this());
+	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getPort(), shared_from_this());
 	MessageASIO::Message message( 1, "stop");
 	c1ient.dispatchMessage( message);
 	communicating = false;
@@ -445,8 +442,4 @@ bool Robot::collision()
 		}
 	}
 	return false;
-}
-
-const ConfigFile& Robot::getFile() const {
-	return file;
 }

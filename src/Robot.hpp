@@ -191,9 +191,7 @@ class Robot :	public AbstractAgent,
 		 */
 		virtual std::string asDebugString() const;
 
-		const ConfigFile& getFile() const;
-
-		bool original;
+	bool original;
 
 		//@}
 	protected:
@@ -230,11 +228,6 @@ class Robot :	public AbstractAgent,
 
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
-
-		std::string port;
-		std::string address;
-
-		ConfigFile file;
 
 };
 
