@@ -7,6 +7,7 @@
 #include "Logger.hpp"
 #include "RobotWorldCanvas.hpp"
 #include "RobotWorld.hpp"
+#include "Logger.hpp"
 
 /**
  *
@@ -151,8 +152,8 @@ void RobotShape::draw( wxDC& dc)
 	// centre of the robot, bottom of the text to the back of the robot.
 	Point rCentre = getRobot()->getPosition();
 	double r = std::sqrt((0.5 * titleSize.x)*(0.5 * titleSize.x) + (0.5 * titleSize.y)*(0.5 * titleSize.y));
-	dc.DrawRotatedText( WXSTRING(title), rCentre.x + (std::cos( angle - 0.5 * PI) * 0.25 * titleSize.x) - r * std::cos(angle), rCentre.y + (std::sin( angle - 0.5 * PI) * 0.25 * titleSize.y) - r * std::sin(angle), angle * (-180 / PI));
-
+	dc.DrawRotatedText( WXSTRING(title), rCentre.x + (std::cos( angle - 0.5 * PI) * 0.25 * size.y) - r * std::cos(angle), rCentre.y + (std::sin( angle - 0.5 * PI) * 0.25 * size.y) - r * std::sin(angle), angle * (-180 / PI));
+	//Logger::log(title + " " + std::to_string(r) + " " + std::to_string(titleSize.x) + " " + std::to_string(titleSize.y));
 }
 /**
  *
