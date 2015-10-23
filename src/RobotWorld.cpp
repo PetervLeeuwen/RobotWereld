@@ -304,4 +304,29 @@ RobotWorld::~RobotWorld()
 	unpopulate();
 }
 
+void RobotWorld::sendRobotData()
+{
 
+}
+
+void RobotWorld::receiveRobotData(std::vector<RobotPtr> aRobot,
+		std::vector<WayPointPtr> aWayPoint, std::vector<GoalPtr> aGoal,
+		std::vector<WallPtr> aWall)
+{
+	for(auto robot : aRobot)
+	{
+		robots.push_back(robot);
+	}
+	for(auto wayPoint : aWayPoint)
+	{
+		wayPoints.push_back(wayPoint);
+	}
+	for(auto goal : aGoal)
+	{
+		goals.push_back(goal);
+	}
+	for(auto wall : aWall)
+	{
+		walls.push_back(wall);
+	}
+}

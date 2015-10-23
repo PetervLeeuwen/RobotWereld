@@ -24,7 +24,8 @@ Robot::Robot( const std::string& aName) :
 				front( 0, 0),
 				speed( 0.0),
 				stop(true),
-				communicating(false)
+				communicating(false),
+				type("origin")
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 
@@ -41,7 +42,8 @@ Robot::Robot(	const std::string& aName,
 				front( 0, 0),
 				speed( 0.0),
 				stop(true),
-				communicating(false)
+				communicating(false),
+				type("origin")
 {
 	//std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 	//attachSensor( laserSensor);

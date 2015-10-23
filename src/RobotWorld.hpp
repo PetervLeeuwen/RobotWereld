@@ -22,115 +22,119 @@ typedef std::shared_ptr<Wall> WallPtr;
 class RobotWorld;
 typedef std::shared_ptr<RobotWorld> RobotWorldPtr;
 
-class RobotWorld : 	public ModelObject
+class RobotWorld: public ModelObject
 {
-	public:
-		/**
-		 *
-		 */
-		static RobotWorld& getRobotWorld();
-		/**
-		 *
-		 */
-		RobotPtr newRobot(	const std::string& aName,
-							const Point& aPosition = Point( -1, -1),
-							bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		WayPointPtr newWayPoint(const std::string& aName,
-								const Point& aPosition = Point( -1, -1),
-								bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		GoalPtr newGoal(const std::string& aName,
-						const Point& aPosition = Point( -1, -1),
-						bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		WallPtr newWall(const Point& aPoint1,
-						const Point& aPoint2,
-						bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		void deleteRobot( 	RobotPtr aRobot,
-							bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		void deleteWayPoint( 	WayPointPtr aWayPoint,
-								bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		void deleteGoal( 	GoalPtr aGoal,
-							bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		void deleteWall( 	WallPtr aWall,
-							bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		RobotPtr getRobotByName( const std::string& aName) const;
-		/**
-		 *
-		 */
-		WayPointPtr getWayPointByName( const std::string& aName) const;
-		/**
-		 *
-		 */
-		GoalPtr getGoalByName( const std::string& aName) const;
-		/**
-		 *
-		 */
-		const std::vector< RobotPtr >& getRobots() const;
-		/**
-		 *
-		 */
-		const std::vector< WayPointPtr >& getWayPoints() const;
-		/**
-		 *
-		 */
-		const std::vector< GoalPtr >& getGoals() const;
-		/**
-		 *
-		 */
-		const std::vector< WallPtr >& getWalls() const;
-		/**
-		 *
-		 */
-		void populate( int aNumberOfWalls = 2);
-		/**
-		 *
-		 */
-		void unpopulate( bool aNotifyObservers = true);
-		/**
-		 *
-		 */
-		void startActing();
-		/**
-		 *
-		 */
-		void stopActing();
-	protected:
-		/**
-		 *
-		 */
-		RobotWorld();
-		/**
-		 *
-		 */
-		virtual ~RobotWorld();
-	private:
-		std::vector< RobotPtr > robots;
-		std::vector< WayPointPtr > wayPoints;
-		std::vector< GoalPtr > goals;
-		std::vector< WallPtr > walls;
+public:
+	/**
+	 *
+	 */
+	static RobotWorld& getRobotWorld();
+	/**
+	 *
+	 */
+	RobotPtr newRobot(const std::string& aName,
+			const Point& aPosition = Point(-1, -1),
+			bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	WayPointPtr newWayPoint(const std::string& aName, const Point& aPosition =
+			Point(-1, -1), bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	GoalPtr newGoal(const std::string& aName,
+			const Point& aPosition = Point(-1, -1),
+			bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	WallPtr newWall(const Point& aPoint1, const Point& aPoint2,
+			bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	void deleteRobot(RobotPtr aRobot, bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	void deleteWayPoint(WayPointPtr aWayPoint, bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	void deleteGoal(GoalPtr aGoal, bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	void deleteWall(WallPtr aWall, bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	RobotPtr getRobotByName(const std::string& aName) const;
+	/**
+	 *
+	 */
+	WayPointPtr getWayPointByName(const std::string& aName) const;
+	/**
+	 *
+	 */
+	GoalPtr getGoalByName(const std::string& aName) const;
+	/**
+	 *
+	 */
+	const std::vector<RobotPtr>& getRobots() const;
+	/**
+	 *
+	 */
+	const std::vector<WayPointPtr>& getWayPoints() const;
+	/**
+	 *
+	 */
+	const std::vector<GoalPtr>& getGoals() const;
+	/**
+	 *
+	 */
+	const std::vector<WallPtr>& getWalls() const;
+	/**
+	 *
+	 */
+	void populate(int aNumberOfWalls = 2);
+	/**
+	 *
+	 */
+	void unpopulate(bool aNotifyObservers = true);
+	/**
+	 *
+	 */
+	void startActing();
+	/**
+	 *
+	 */
+	void stopActing();
+	/**
+	 *
+	 */
+	void sendRobotData();
+	/**
+	 *
+	 */
+	void receiveRobotData(std::vector<RobotPtr> aRobot,
+			std::vector<WayPointPtr> aWayPoint, std::vector<GoalPtr> aGoal,
+			std::vector<WallPtr> aWall);
+protected:
+	/**
+	 *
+	 */
+	RobotWorld();
+	/**
+	 *
+	 */
+	virtual ~RobotWorld();
+private:
+	std::vector<RobotPtr> robots;
+	std::vector<WayPointPtr> wayPoints;
+	std::vector<GoalPtr> goals;
+	std::vector<WallPtr> walls;
 };
 
 #endif // ROBOTWORLD_HPP_

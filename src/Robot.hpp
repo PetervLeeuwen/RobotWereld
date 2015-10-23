@@ -208,6 +208,7 @@ class Robot :	public AbstractAgent,
 		bool collision();
 	private:
 		std::string name;
+		std::string type;
 
 		Size size;
 		Point position;
