@@ -191,11 +191,9 @@ class Robot :	public AbstractAgent,
 		 */
 		virtual std::string asDebugString() const;
 
-<<<<<<< HEAD
 		const ConfigFile& getFile() const;
-=======
+
 		bool original;
->>>>>>> refs/remotes/origin/Multiple-Robots
 
 		//@}
 	protected:

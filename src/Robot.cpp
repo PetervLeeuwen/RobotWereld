@@ -26,12 +26,9 @@ Robot::Robot( const std::string& aName) :
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-<<<<<<< HEAD
 				type("origin"),
 				file("config.txt")
-=======
 				original(true)
->>>>>>> refs/remotes/origin/Multiple-Robots
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 	file.loadFile();
