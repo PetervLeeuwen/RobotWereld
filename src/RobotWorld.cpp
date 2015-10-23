@@ -356,9 +356,9 @@ GoalPtr RobotWorld::getGoal() const
 	return nullptr;
 }
 
-GoalPtr RobotWorld::getRobot() const
+RobotPtr RobotWorld::getRobot() const
 {
-	for(GoalPtr robot : robots)
+	for(RobotPtr robot : robots)
 	{
 		if(robot.get()->original){
 			return robot;
