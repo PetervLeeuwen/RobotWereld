@@ -46,10 +46,7 @@ Robot::Robot(	const std::string& aName,
 				communicating(false),
 				original(true)
 {
-	//std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-	//attachSensor( laserSensor);
-
-	//attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -342,7 +339,7 @@ void Robot::drive(GoalPtr goal)
 		Logger::log( __PRETTY_FUNCTION__);
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
-			//enables and starts sensor.
+			//enables and starts sensor. Starts sensor thread for each sensor.
 			sensor->setOn();
 		}
 

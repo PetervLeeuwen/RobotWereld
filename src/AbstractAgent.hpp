@@ -41,6 +41,10 @@ class AbstractAgent : public ModelObject
 		/**
 		 *
 		 */
+		virtual std::shared_ptr< AbstractPercept > removePercept();
+		/**
+		 *
+		 */
 		virtual void startActing() = 0;
 		/**
 		 *

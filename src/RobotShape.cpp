@@ -45,7 +45,7 @@ void RobotShape::handleActivated()
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	GoalPtr goal = RobotWorld::getRobotWorld().getGoalByName( "Leon");
+	GoalPtr goal = RobotWorld::getRobotWorld().getGoal();
 	if (goal)
 	{
 		Point goalPosition = goal->getPosition();
