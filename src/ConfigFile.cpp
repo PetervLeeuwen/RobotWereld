@@ -15,9 +15,9 @@
 #include"Logger.hpp"
 #include "ConfigFile.hpp"
 
-
-ConfigFile::ConfigFile(){
-	loadFile();
+ConfigFile::ConfigFile(std::string aFile):
+	file(aFile)
+{
 }
 
 void ConfigFile::loadFile() {
@@ -26,7 +26,6 @@ void ConfigFile::loadFile() {
 		std::getline(ifStream, ipaddress);
 		std::getline(ifStream, port);
 		ifStream.close();
-		Logger::log(__PRETTY_FUNCTION__);
 		Logger::log("IPaddress: " + ipaddress);
 		Logger::log("Port: " + port);
 	}
@@ -37,17 +36,11 @@ void ConfigFile::loadFile() {
 	ifStream.close();
 }
 
-
-ConfigFile& ConfigFile::getInstance(){
-	static ConfigFile instance;
-	return instance;
-}
-
-const std::string& ConfigFile::getPort(){
+const std::string& ConfigFile::getPort() const {
 	return port;
 }
 
-const std::string& ConfigFile::getIpaddress(){
+const std::string& ConfigFile::getIpaddress() const {
 	return ipaddress;
 }
 
