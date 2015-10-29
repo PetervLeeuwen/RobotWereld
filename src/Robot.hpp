@@ -189,6 +189,11 @@ class Robot :	public AbstractAgent,
 		 */
 		virtual std::string asDebugString() const;
 
+		const ObjectId& getRobotId() const
+		{
+			return robotId;
+		}
+
 		bool original;
 
 		//@}
@@ -211,6 +216,7 @@ class Robot :	public AbstractAgent,
 		bool collision();
 	private:
 		std::string name;
+		ObjectId robotId;
 
 		Size size;
 		Point position;

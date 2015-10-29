@@ -366,3 +366,23 @@ RobotPtr RobotWorld::getRobot() const
 	}
 	return nullptr;
 }
+
+void RobotWorld::updateRobotPosition(ObjectId id,Point location)
+{
+	for(RobotPtr robot : robots)
+	{
+		if(robot.get()->getRobotId() == id){
+			robot.get()->setPosition(location,true);
+		}
+	}
+}
+
+void RobotWorld::sendUpdateRobotPosition()
+{
+	for(RobotPtr robot : robots)
+	{
+		if(robot.get()->original){
+			//updateRobotPosition(robot.get()->getRobotId(),robot.get()->getPosition());
+		}
+	}
+}

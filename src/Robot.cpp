@@ -26,7 +26,8 @@ Robot::Robot( const std::string& aName) :
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				original(true)
+				original(true),
+				robotId(ObjectId::newObjectId())
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 
@@ -44,7 +45,8 @@ Robot::Robot(	const std::string& aName,
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				original(true)
+				original(true),
+				robotId(ObjectId::newObjectId())
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
