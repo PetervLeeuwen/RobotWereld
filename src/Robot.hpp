@@ -197,6 +197,7 @@ class Robot :	public AbstractAgent,
 		{
 			return robotId;
 		}
+		const ConfigFile& getFile() const;
 
 		bool original;
 
@@ -236,6 +237,12 @@ class Robot :	public AbstractAgent,
 
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
+
+		std::string port;
+		std::string address;
+
+		ConfigFile file;
+
 };
 
 #endif // ROBOT_HPP_

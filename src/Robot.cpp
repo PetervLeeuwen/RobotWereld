@@ -28,8 +28,12 @@ Robot::Robot( const std::string& aName) :
 				communicating(false),
 				original(true),
 				robotId(ObjectId::newObjectId())
+				type("origin"),
+				file("config.txt")
+				original(true)
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	file.loadFile();
 
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
@@ -287,9 +291,13 @@ void Robot::startCommunicating()
  */
 void Robot::stopCommunicating()
 {
+<<<<<<< HEAD
 	ConfigFile File("config.txt");
 	File.loadFile();
 	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), "localhost", "12345", shared_from_this());
+=======
+	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), file.getIpaddress(), file.getPort(), shared_from_this());
+>>>>>>> parent of 8e4bd27... Server bugs
 	MessageASIO::Message message( 1, "stop");
 	c1ient.dispatchMessage( message);
 	communicating = false;
@@ -451,4 +459,8 @@ bool Robot::collision()
 		}
 	}
 	return false;
+}
+
+const ConfigFile& Robot::getFile() const {
+	return file;
 }
