@@ -289,7 +289,7 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 	            GBPosition( 2, 0),
 	            GBSpan( 1, 1), EXPAND);
 	sizer->Add( makeButton( panel,
-	                        "Say the words",
+	                        "Send the data",
 	                        [this](CommandEvent &anEvent){this->OnButton6Clicked(anEvent);}),
 	            GBPosition( 2, 1),
 	            GBSpan( 1, 1), EXPAND);
@@ -377,17 +377,20 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sta
 	Logger::log( __PRETTY_FUNCTION__);
 
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
-	if (robot)
+	if(robot)
 	{
 		robot->startCommunicating();
+		Logger::log("Port of " + robot.get()->getName() + " = " + ConfigFile::getInstance().getPort());
+		Logger::log("IPaddress of " + robot.get()->getName() + " = " + ConfigFile::getInstance().getIpaddress());
 	}
-	Logger::log("Port of " + robot.get()->getName() + " = " + ConfigFile::getInstance().getPort());
-	Logger::log("IPaddress of " + robot.get()->getName() + " = " + ConfigFile::getInstance().getIpaddress());
+	else{
+		Logger::log("No robot populated");
+	}
 }
 /**
  *
  */
-void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say the words
+void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//send the data
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -396,6 +399,8 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 	{
 		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
 		std::string remotePort = ConfigFile::getInstance().getPort();
+		Logger::log("IPaddress: " + remoteIpAdres);
+		Logger::log("Port: " + remotePort);
 
 		/*if (MainApplication::isArgGiven( "-ip"))
 		{
@@ -408,8 +413,8 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
 		MessageASIO::Message message( 1, "Hello world!");
-		Logger::log("Sended: hello world");
 		c1ient.dispatchMessage( message);
+		Logger::log("Sended: hello world");
 	}
 }
 /**
