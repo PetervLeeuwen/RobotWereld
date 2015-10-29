@@ -388,7 +388,7 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sta
 void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say the words
 {
 	Logger::log( __PRETTY_FUNCTION__);
-
+	ConfigFile::getInstance();
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{

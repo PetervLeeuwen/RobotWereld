@@ -25,13 +25,13 @@ void ConfigFile::loadFile() {
 		std::getline(ifStream, ipaddress);
 		std::getline(ifStream, port);
 		ifStream.close();
-		Logger::log("IPaddress: " + ipaddress);
-		Logger::log("Port: " + port);
+		Logger::log("ConfigFile IPaddress: " + ipaddress);
+		Logger::log("ConfigFile Port: " + port);
 	}
-
 	else
+	{
 		Logger::log("Unable to open file");
-
+	}
 	ifStream.close();
 }
 
@@ -40,11 +40,11 @@ ConfigFile& ConfigFile::getInstance(){
 	return instance;
 }
 
-const std::string& ConfigFile::getPort(){
+const std::string ConfigFile::getPort(){
 	return port;
 }
 
-const std::string& ConfigFile::getIpaddress(){
+const std::string ConfigFile::getIpaddress(){
 	return ipaddress;
 }
 

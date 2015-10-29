@@ -15,11 +15,11 @@
 class ConfigFile {
 
 public:
-	const std::string& getPort();
+	const std::string getPort();
 
 	static ConfigFile& getInstance();
 
-	const std::string& getIpaddress();
+	const std::string getIpaddress();
 
 
 private:
