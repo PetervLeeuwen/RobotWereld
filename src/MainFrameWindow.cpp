@@ -394,7 +394,7 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 	{
 		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
 		std::string remotePort = ConfigFile::getInstance().getPort();
-		Logger::log("Button6" + remoteIpAdres + " " + remotePort);
+		Logger::log("Button6 " + remoteIpAdres + " " + remotePort);
 
 		if (MainApplication::isArgGiven( "-ip"))
 		{
