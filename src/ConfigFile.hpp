@@ -15,19 +15,24 @@
 class ConfigFile {
 
 public:
-	ConfigFile(std::string file);
+	const std::string& getPort();
+
+	static ConfigFile& getInstance();
+
+	const std::string& getIpaddress();
+
+
+private:
+	ConfigFile();
 	virtual ~ConfigFile();
 
 	void loadFile();
 
-	const std::string& getIpaddress() const;
-
-	const std::string& getPort() const;
-
-private:
-	std::string file;
+	std::string file = "config.txt";
 	std::string ipaddress;
 	std::string port;
+
+	static ConfigFile instance;
 };
 
 #endif /* SRC_CONFIGFILE_HPP_ */
