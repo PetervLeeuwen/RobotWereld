@@ -15,6 +15,7 @@
 #include "Logger.hpp"
 #include "Client.hpp"
 #include "Message.hpp"
+#include "ConfigFile.hpp"
 
 /**
  * IDs for the controls and the menu commands
@@ -391,8 +392,8 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
-		std::string remoteIpAdres = "localhost";
-		std::string remotePort = "12345";
+		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
+		std::string remotePort = ConfigFile::getInstance().getPort();
 
 		if (MainApplication::isArgGiven( "-ip"))
 		{
