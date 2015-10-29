@@ -425,9 +425,9 @@ bool Robot::arrived(GoalPtr aGoal)
 /**
  *
  */
-bool Robot::operator ==(const Robot& a, const Robot& b)
+bool Robot::operator ==(const Robot& b)
 {
-	return a.getRobotId() == b.getRobotId();
+	return robotId == b.getRobotId();
 }
 
 /**

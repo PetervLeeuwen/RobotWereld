@@ -45,7 +45,7 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
-		bool operator==(const Robot& a, const Robot& b);
+		bool operator==(const Robot& b);
 		/**
 		 *
 		 */
