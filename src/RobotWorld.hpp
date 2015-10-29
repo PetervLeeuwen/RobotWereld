@@ -129,6 +129,14 @@ public:
 	void receiveRobotData(std::vector<RobotPtr> aRobot,
 			std::vector<WayPointPtr> aWayPoint, std::vector<GoalPtr> aGoal,
 			std::vector<WallPtr> aWall);
+	/**
+	 *
+	 */
+	void updateRobotPosition(ObjectId id,Point location);
+	/**
+	 *
+	 */
+	void sendUpdateRobotPosition();
 protected:
 	/**
 	 *

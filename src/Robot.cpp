@@ -26,7 +26,8 @@ Robot::Robot( const std::string& aName) :
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				original(true)
+				original(true),
+				robotId(ObjectId::newObjectId())
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 
@@ -44,7 +45,8 @@ Robot::Robot(	const std::string& aName,
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				original(true)
+				original(true),
+				robotId(ObjectId::newObjectId())
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
@@ -285,7 +287,9 @@ void Robot::startCommunicating()
  */
 void Robot::stopCommunicating()
 {
-	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getPort(), shared_from_this());
+	ConfigFile File("config.txt");
+	File.loadFile();
+	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), "localhost", "12345", shared_from_this());
 	MessageASIO::Message message( 1, "stop");
 	c1ient.dispatchMessage( message);
 	communicating = false;
@@ -418,6 +422,14 @@ bool Robot::arrived(GoalPtr aGoal)
 	}
 	return false;
 }
+/**
+ *
+ */
+bool Robot::operator ==(const Robot& b)
+{
+	return robotId == b.getRobotId();
+}
+
 /**
  *
  */

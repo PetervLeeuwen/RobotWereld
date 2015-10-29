@@ -12,10 +12,8 @@
 #include "Vector.hpp"
 #include "AStar.hpp"
 #include "Widgets.hpp"
-#include "ConfigFile.hpp"
 
 #include <vector>
-#include <iostream>
 #include "Thread.hpp"
 
 namespace MessageASIO
@@ -44,6 +42,10 @@ class Robot :	public AbstractAgent,
 		 */
 		Robot(	const std::string& aName,
 				const Point& aPosition);
+		/**
+		 *
+		 */
+		bool operator==(const Robot& b);
 		/**
 		 *
 		 */
@@ -191,7 +193,12 @@ class Robot :	public AbstractAgent,
 		 */
 		virtual std::string asDebugString() const;
 
-	bool original;
+		const ObjectId& getRobotId() const
+		{
+			return robotId;
+		}
+
+		bool original;
 
 		//@}
 	protected:
@@ -213,6 +220,7 @@ class Robot :	public AbstractAgent,
 		bool collision();
 	private:
 		std::string name;
+		ObjectId robotId;
 
 		Size size;
 		Point position;
@@ -228,7 +236,6 @@ class Robot :	public AbstractAgent,
 
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
-
 };
 
 #endif // ROBOT_HPP_
