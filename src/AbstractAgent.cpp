@@ -22,8 +22,10 @@ void AbstractAgent::attachSensor( 	std::shared_ptr< AbstractSensor > aSensor,
 									bool attachSensorToAgent /*= false*/)
 {
 	sensors.push_back( aSensor);
+	Logger::log("new sensor added");
 	if (attachSensorToAgent == true)
 	{
+		Logger::log("sensor added to agent");
 		aSensor->attachAgent( this);
 	}
 }
@@ -49,10 +51,9 @@ void AbstractAgent::addPercept( std::shared_ptr< AbstractPercept > aPercept)
 /**
  *
  */
-void AbstractAgent::check()
+std::shared_ptr< AbstractPercept >  AbstractAgent::removePercept()
 {
-	std::shared_ptr<AbstractPercept> percept = perceptQueue.dequeue();
-	Logger::log("checked a percept");
+	return perceptQueue.dequeue();
 }
 /**
  *

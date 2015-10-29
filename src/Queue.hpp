@@ -27,8 +27,7 @@ class Queue
 		QueueContentType dequeue()
 		{
 			std::unique_lock< std::mutex > lock( queueBusy);
-			while (queue.empty())
-				queueFull.wait( lock);
+			while (queue.size()==0) queueFull.wait(lock);
 
 			QueueContentType front = queue.front();
 			queue.pop();

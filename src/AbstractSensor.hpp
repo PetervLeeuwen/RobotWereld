@@ -33,7 +33,7 @@ class AbstractPercept
 };
 //	class AbstractPercept
 
-class AbstractSensor
+class AbstractSensor //Controller class
 {
 	public:
 		/**
@@ -57,7 +57,7 @@ class AbstractSensor
 		 */
 		virtual void setOff();
 		/**
-		 *
+		 *Get value when sensor a triggers, returns an shared_ptr with that sensor
 		 */
 		virtual std::shared_ptr< AbstractStimulus > getStimulus() = 0;
 		/**
@@ -71,11 +71,15 @@ class AbstractSensor
 		/**
 		 *
 		 */
+		virtual std::shared_ptr< AbstractPercept > removePercept();
+		/*
+		 *
+		 */
 		virtual void run( unsigned long aSleepTime);
 		/**
 		 *
 		 */
-		virtual void check();
+		virtual void consume();
 		/**
 		 *
 		 */
@@ -102,6 +106,7 @@ class AbstractSensor
 		AbstractAgent* agent;
 		bool running;
 		std::thread sensorThread;
+		std::thread consumeThread;
 		mutable std::recursive_mutex sensorMutex;
 
 	private:
