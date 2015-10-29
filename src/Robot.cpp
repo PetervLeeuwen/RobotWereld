@@ -425,6 +425,14 @@ bool Robot::arrived(GoalPtr aGoal)
 /**
  *
  */
+bool Robot::operator ==(const Robot& a, const Robot& b)
+{
+	return a.getRobotId() == b.getRobotId();
+}
+
+/**
+ *
+ */
 bool Robot::collision()
 {
 	Point frontLeft = getFrontLeft();

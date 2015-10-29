@@ -45,6 +45,10 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
+		bool operator==(const Robot& a, const Robot& b);
+		/**
+		 *
+		 */
 		virtual ~Robot();
 		/**
 		 *
