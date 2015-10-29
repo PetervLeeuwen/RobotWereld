@@ -15,6 +15,7 @@
 #include "Logger.hpp"
 #include "Client.hpp"
 #include "Message.hpp"
+#include "ConfigFile.hpp"
 
 /**
  * IDs for the controls and the menu commands
@@ -288,7 +289,7 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 	            GBPosition( 2, 0),
 	            GBSpan( 1, 1), EXPAND);
 	sizer->Add( makeButton( panel,
-	                        "Say the words",
+	                        "Send the data",
 	                        [this](CommandEvent &anEvent){this->OnButton6Clicked(anEvent);}),
 	            GBPosition( 2, 1),
 	            GBSpan( 1, 1), EXPAND);
@@ -375,38 +376,45 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sta
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
-	if (robot)
+	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
+	if(robot)
 	{
 		robot->startCommunicating();
+		Logger::log("Port of " + robot.get()->getName() + " = " + ConfigFile::getInstance().getPort());
+		Logger::log("IPaddress of " + robot.get()->getName() + " = " + ConfigFile::getInstance().getIpaddress());
+	}
+	else{
+		Logger::log("No robot populated");
 	}
 }
 /**
  *
  */
-void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say the words
+void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//send the data
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
+	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
-		std::string remoteIpAdres = "localhost";
-		std::string remotePort = "12345";
+		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
+		std::string remotePort = ConfigFile::getInstance().getPort();
+		Logger::log("IPaddress: " + remoteIpAdres);
+		Logger::log("Port: " + remotePort);
 
-		if (MainApplication::isArgGiven( "-ip"))
+		/*if (MainApplication::isArgGiven( "-ip"))
 		{
 			remoteIpAdres = MainApplication::getArg( "-ip").value;
 		}
 		if (MainApplication::isArgGiven( "-port"))
 		{
 			remotePort = MainApplication::getArg( "-port").value;
-		}
+		}*/
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
 		MessageASIO::Message message( 1, "Hello world!");
-		Logger::log("hello world");
 		c1ient.dispatchMessage( message);
+		Logger::log("Sended: hello world");
 	}
 }
 /**
@@ -416,7 +424,7 @@ void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sto
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	RobotPtr thijs = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
+	RobotPtr thijs = RobotWorld::getRobotWorld().getRobot();
 	if (thijs)
 	{
 		thijs->stopCommunicating();
