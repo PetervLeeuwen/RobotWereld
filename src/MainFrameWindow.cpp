@@ -375,7 +375,7 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sta
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
+	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
 		robot->startCommunicating();
@@ -388,13 +388,18 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	RobotPtr robot = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
+	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
+<<<<<<< HEAD
 		//std::string remoteIpAdres = "localhost";
 		//std::string remotePort = "12345";
 		std::string remoteIpAdres = robot.get()->getFile().getIpaddress();
 		std::string remotePort = robot.get()->getFile().getPort();
+=======
+		std::string remoteIpAdres = "87.195.155.79";
+		std::string remotePort = "12345";
+>>>>>>> refs/remotes/origin/Multiple-Robots
 
 		if (MainApplication::isArgGiven( "-ip"))
 		{
@@ -418,7 +423,7 @@ void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sto
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	RobotPtr thijs = RobotWorld::getRobotWorld().getRobotByName( "Thijs");
+	RobotPtr thijs = RobotWorld::getRobotWorld().getRobot();
 	if (thijs)
 	{
 		thijs->stopCommunicating();
