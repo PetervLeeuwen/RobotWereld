@@ -380,6 +380,8 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sta
 	if (robot)
 	{
 		robot->startCommunicating();
+		Logger::log("IPaddress: " + ConfigFile::getInstance().getIpaddress());
+		Logger::log("Port: " + ConfigFile::getInstance().getPort());
 	}
 }
 /**
