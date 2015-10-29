@@ -388,12 +388,14 @@ void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sta
 void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say the words
 {
 	Logger::log( __PRETTY_FUNCTION__);
-	ConfigFile::getInstance();
+
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
-		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
-		std::string remotePort = ConfigFile::getInstance().getPort();
+		auto instance = ConfigFile::getInstance();
+		std::string remoteIpAdres = "localhost";
+		std::string remotePort = "12345";
+		Logger::log("Button6" + remoteIpAdres + " " + remotePort);
 
 		if (MainApplication::isArgGiven( "-ip"))
 		{

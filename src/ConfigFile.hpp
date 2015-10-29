@@ -15,6 +15,7 @@
 class ConfigFile {
 
 public:
+	virtual ~ConfigFile();
 	const std::string getPort();
 
 	static ConfigFile& getInstance();
@@ -24,7 +25,6 @@ public:
 
 private:
 	ConfigFile();
-	virtual ~ConfigFile();
 
 	void loadFile();
 
