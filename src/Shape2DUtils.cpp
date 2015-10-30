@@ -310,6 +310,14 @@ double GetAngle(	const Point& aStartpoint,
 /**
  *
  */
+unsigned long Shape2DUtils::getDistanceBetweenPoints(	const Point& aPoint,
+														const Point& bPoint)
+{
+
+}
+/**
+ *
+ */
 /* static */bool Shape2DUtils::isCompassPoint(	const Point& aPoint,
 												const Size& aSize,
 												const Point& aBorderPoint,

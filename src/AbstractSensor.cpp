@@ -110,18 +110,12 @@ void AbstractSensor::consume()
 	while (running)
 	{
 		std::shared_ptr< AbstractPercept > percept = removePercept();
-		//percept.get()->check();
-		/**if(DistancePercept* d = dynamic_cast<DistancePercept*>(percept))
+		if(DistancePercept* d = dynamic_cast<DistancePercept*>(percept))
 		{
-			std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
-			for(auto robot : robots)
-			{
-				if(!(robot == agent))
-				{
-
-				}
+			if(d->triggerd){
+				//handle action
 			}
-		}*/
+		}
 	}
 	Logger::log("stopped with comsuming sensors");
 }

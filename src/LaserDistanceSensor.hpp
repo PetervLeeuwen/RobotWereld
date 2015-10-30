@@ -27,14 +27,30 @@ class DistancePercept : public AbstractPercept
 {
 	public:
 		DistancePercept( const DistanceStimulus& aDistanceStimulus) :
-						distance( aDistanceStimulus.distance)
+						distance( aDistanceStimulus.distance),
+						triggerd(false)
 		{
 		}
 		DistancePercept( unsigned long aDistance) :
-						distance( aDistance)
+						distance( aDistance),
+						triggerd(false)
 		{
 		}
+		bool check(AbstractAgent* agent)
+		{
+			std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
+			for(auto robot : robots)
+			{
+				if(robot == agent)
+				{
+					continue;
+				}
+				if()
+			}
+		}
+
 		unsigned long distance;
+		bool triggerd;
 };
 //	class DistancePercept
 

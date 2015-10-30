@@ -280,7 +280,7 @@ void Robot::handleNotification()
 void Robot::startCommunicating()
 {
 	communicating = true;
-	CommunicationService::getCommunicationService().runRobotServer(this/*, port*/);
+	CommunicationService::getCommunicationService().runRobotServer(this,12345);
 }
 /**
  *
@@ -298,7 +298,7 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
-	aMessage.setBody( "Goodbye cruel world!");
+	aMessage.setBody( aMessage.asString() + " Server reponse");
 }
 /**
  *
@@ -427,7 +427,13 @@ bool Robot::operator ==(const Robot& b)
 {
 	return robotId == b.getRobotId();
 }
-
+/**
+ *
+ */
+bool Robot::operator !=(const Robot& b)
+{
+	return robotId != b.getRobotId();
+}
 /**
  *
  */
