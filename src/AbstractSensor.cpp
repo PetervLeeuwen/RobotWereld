@@ -1,5 +1,6 @@
 #include "AbstractSensor.hpp"
 #include "AbstractAgent.hpp"
+#include "LaserDistanceSensor.hpp"
 #include "Logger.hpp"
 
 /**
@@ -28,7 +29,7 @@ AbstractSensor::~AbstractSensor()
 /**
  *
  */
-void AbstractSensor::setOn( unsigned long aSleepTime /*= 100*/)
+void AbstractSensor::setOn( Robot *aRobot, unsigned long aSleepTime /*= 100*/)
 {
 	std::unique_lock< std::recursive_mutex > lock( sensorMutex);
 
@@ -39,8 +40,8 @@ void AbstractSensor::setOn( unsigned long aSleepTime /*= 100*/)
 		running = true;
 		std::thread sensorThread( [this, aSleepTime]
 		{	run(aSleepTime); });
-		std::thread consumeThread( [this, aSleepTime]
-		{	consume(); });
+		std::thread consumeThread( [this,aRobot]
+		{	consume(aRobot); });
 		sensorThread.swap( sensorThread);
 	}
 }
@@ -69,6 +70,7 @@ void AbstractSensor::sendPercept( std::shared_ptr< AbstractPercept > anAbstractP
  */
 std::shared_ptr< AbstractPercept > AbstractSensor::removePercept()
 {
+	Logger::log("removed a percept");
 	return agent->removePercept();
 }
 /**
@@ -105,15 +107,15 @@ void AbstractSensor::run( unsigned long aSleepTime)
 /**
  *
  */
-void AbstractSensor::consume()
+void AbstractSensor::consume(Robot *aRobot)
 {
 	while (running)
 	{
 		std::shared_ptr< AbstractPercept > percept = removePercept();
-		if(DistancePercept* d = dynamic_cast<DistancePercept*>(percept))
+		if(DistancePercept* d = dynamic_cast<DistancePercept*>(percept.get()))
 		{
-			if(d->triggerd){
-				//handle action
+			if(d->check(aRobot)){
+				Logger::log("Sensor has been triggerd");
 			}
 		}
 	}

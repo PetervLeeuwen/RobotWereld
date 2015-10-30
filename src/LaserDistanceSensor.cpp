@@ -12,14 +12,36 @@
 /**
  *
  */
+bool DistancePercept::check(Robot *agent)
+{
+	triggerd = false;
+	std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
+	for(auto robot : robots)
+	{
+		if(robot.get() == agent)
+		{
+			continue;
+		}
+		if(Shape2DUtils::getDistanceBetweenPoints(robot.get()->getPosition(),
+					agent->getPosition())
+				<= distance)
+		{
+			triggerd = true;
+		}
+	}
+	return triggerd;
+}
+/**
+ *
+ */
 LaserDistanceSensor::LaserDistanceSensor()
 {
 }
 /**
  *
  */
-LaserDistanceSensor::LaserDistanceSensor( Robot* aRobot) :
-				AbstractSensor( aRobot)
+LaserDistanceSensor::LaserDistanceSensor(Robot* aRobot):
+		AbstractSensor(aRobot)
 {
 }
 /**

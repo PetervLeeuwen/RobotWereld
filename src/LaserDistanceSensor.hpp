@@ -9,8 +9,10 @@
 #define LASERDISTANCESENSOR_HPP_
 
 #include "Config.hpp"
-
+#include "Shape2DUtils.hpp"
 #include "AbstractSensor.hpp"
+#include "Robot.hpp"
+#include "RobotWorld.hpp"
 
 class DistanceStimulus : public AbstractStimulus
 {
@@ -36,25 +38,13 @@ class DistancePercept : public AbstractPercept
 						triggerd(false)
 		{
 		}
-		bool check(AbstractAgent* agent)
-		{
-			std::vector<RobotPtr> robots = RobotWorld::getRobotWorld().getRobots();
-			for(auto robot : robots)
-			{
-				if(robot == agent)
-				{
-					continue;
-				}
-				if()
-			}
-		}
+		bool check(Robot *agent);
 
 		unsigned long distance;
 		bool triggerd;
 };
 //	class DistancePercept
 
-class Robot;
 
 class LaserDistanceSensor : public AbstractSensor
 {

@@ -313,7 +313,9 @@ double GetAngle(	const Point& aStartpoint,
 unsigned long Shape2DUtils::getDistanceBetweenPoints(	const Point& aPoint,
 														const Point& bPoint)
 {
-
+	auto a = abs(aPoint.x - bPoint.x);
+	auto b = abs(aPoint.y - bPoint.y);
+	return sqrt(a*a + b*b);
 }
 /**
  *

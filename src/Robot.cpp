@@ -29,7 +29,7 @@ Robot::Robot( const std::string& aName) :
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)),true);
 
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
@@ -48,7 +48,26 @@ Robot::Robot(	const std::string& aName,
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)),true);
+//	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
+}
+/**
+ *
+ */
+Robot::Robot(	const std::string& aName,
+				const Point& aPosition,
+				const bool& aOriginal) :
+				name( aName),
+				size( DefaultSize),
+				position( aPosition),
+				front( 0, 0),
+				speed( 0.0),
+				stop(true),
+				communicating(false),
+				original(true),
+				robotId(ObjectId::newObjectId())
+{
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)),true);
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -342,7 +361,7 @@ void Robot::drive(GoalPtr goal)
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
 			//enables and starts sensor. Starts sensor thread for each sensor.
-			sensor->setOn();
+			sensor->setOn(this,100);
 		}
 
 		if (speed == 0.0)

@@ -86,7 +86,7 @@ class Shape2DUtils
 		/**
 		 *
 		 */
-		static unsigned long Shape2DUtils::getDistanceBetweenPoints(	const Point& aPoint,
+		static unsigned long getDistanceBetweenPoints(	const Point& aPoint,
 																		const Point& bPoint);
 		/**
 		 * Enum to find the point of a rectangle

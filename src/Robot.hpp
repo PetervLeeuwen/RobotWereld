@@ -45,6 +45,12 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
+		Robot(	const std::string& aName,
+				const Point& aPosition,
+				const bool& aOriginal);
+		/**
+		 *
+		 */
 		bool operator==(const Robot& b);
 		/**
 		 *

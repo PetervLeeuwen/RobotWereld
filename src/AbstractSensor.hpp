@@ -8,7 +8,6 @@
 #include "Thread.hpp"
 
 class AbstractAgent;
-
 class AbstractStimulus
 {
 	public:
@@ -32,7 +31,7 @@ class AbstractPercept
 		}
 };
 //	class AbstractPercept
-
+class Robot;
 class AbstractSensor //Controller class
 {
 	public:
@@ -51,7 +50,7 @@ class AbstractSensor //Controller class
 		/**
 		 * A sensor reads 10 stimuli/second (it sleeps for 100 ms) by default
 		 */
-		virtual void setOn( unsigned long aSleepTime = 100);
+		virtual void setOn( Robot *aRobot, unsigned long aSleepTime = 100);
 		/**
 		 *
 		 */
@@ -79,7 +78,7 @@ class AbstractSensor //Controller class
 		/**
 		 *
 		 */
-		virtual void consume();
+		virtual void consume(Robot *aRobot);
 		/**
 		 *
 		 */
