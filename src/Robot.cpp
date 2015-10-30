@@ -29,7 +29,7 @@ Robot::Robot( const std::string& aName) :
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)),true);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
 
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
@@ -48,7 +48,7 @@ Robot::Robot(	const std::string& aName,
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)),true);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -67,7 +67,7 @@ Robot::Robot(	const std::string& aName,
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)),true);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -173,6 +173,10 @@ void Robot::stopActing()
 	//robotThread.interrupt();
 	stop = true;
 	robotThread.join();
+	for (std::shared_ptr< AbstractSensor > sensor : sensors)
+	{
+		sensor->setOff();
+	}
 }
 /**
  *

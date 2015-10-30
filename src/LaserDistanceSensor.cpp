@@ -34,14 +34,16 @@ bool DistancePercept::check(Robot *agent)
 /**
  *
  */
-LaserDistanceSensor::LaserDistanceSensor()
+LaserDistanceSensor::LaserDistanceSensor():
+		sensorRange(0)
 {
 }
 /**
  *
  */
-LaserDistanceSensor::LaserDistanceSensor(Robot* aRobot):
-		AbstractSensor(aRobot)
+LaserDistanceSensor::LaserDistanceSensor(Robot* aRobot, unsigned long aSensorRange):
+		AbstractSensor(aRobot),
+		sensorRange(aSensorRange)
 {
 }
 /**
@@ -55,7 +57,7 @@ LaserDistanceSensor::~LaserDistanceSensor()
  */
 std::shared_ptr< AbstractStimulus > LaserDistanceSensor::getStimulus()
 {
-	std::shared_ptr< AbstractStimulus > distanceStimulus( new DistanceStimulus( 15));
+	std::shared_ptr< AbstractStimulus > distanceStimulus( new DistanceStimulus(sensorRange));
 	return distanceStimulus;
 }
 /**

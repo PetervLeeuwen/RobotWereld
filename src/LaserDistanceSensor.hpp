@@ -56,7 +56,7 @@ class LaserDistanceSensor : public AbstractSensor
 		/**
 		 *
 		 */
-		LaserDistanceSensor( Robot* aRobot);
+		LaserDistanceSensor( Robot* aRobot, unsigned long aSensorRange);
 		/**
 		 *
 		 */
@@ -84,6 +84,7 @@ class LaserDistanceSensor : public AbstractSensor
 		//@}
 	protected:
 	private:
+		unsigned long sensorRange;
 
 };
 

@@ -115,7 +115,7 @@ void AbstractSensor::consume(Robot *aRobot)
 		if(DistancePercept* d = dynamic_cast<DistancePercept*>(percept.get()))
 		{
 			if(d->check(aRobot)){
-				Logger::log("Sensor has been triggerd");
+				Logger::log("Sensor has been triggerd for" + aRobot->getName());
 			}
 		}
 	}
