@@ -86,6 +86,7 @@ class MainFrameWindow : public Frame
 		void OnButton5Clicked( CommandEvent& anEvent);//Start communicating
 		void OnButton6Clicked( CommandEvent& anEvent);//Say the words
 		void OnButton7Clicked( CommandEvent& anEvent);//Stop communicating
+		void OnButton8Clicked( CommandEvent& anEvent);//Merge worlds
 };
 //	class MainFrameWindow
 

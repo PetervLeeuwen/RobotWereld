@@ -284,7 +284,7 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 
 
 	sizer->Add( makeButton( panel,
-	                        "Start communicating",
+	                        "Start server",
 	                        [this](CommandEvent &anEvent){this->OnButton5Clicked(anEvent);}),
 	            GBPosition( 2, 0),
 	            GBSpan( 1, 1), EXPAND);
@@ -297,6 +297,11 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 	                        "Stop communicating",
 	                        [this](CommandEvent &anEvent){this->OnButton7Clicked(anEvent);}),
 	            GBPosition( 2, 2),
+	            GBSpan( 1, 1), EXPAND);
+	sizer->Add( makeButton( panel,
+	                        "Merge Worlds",
+	                        [this](CommandEvent &anEvent){this->OnButton8Clicked(anEvent);}),
+	            GBPosition( 2, 3),
 	            GBSpan( 1, 1), EXPAND);
 
 	panel->SetSizerAndFit( sizer);
@@ -427,3 +432,27 @@ void MainFrameWindow::OnButton7Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sto
 	}
 }
 
+void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Merge worlds
+{
+	Logger::log( __PRETTY_FUNCTION__);
+
+	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
+	if(robot){
+		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
+		std::string remotePort = ConfigFile::getInstance().getPort();
+		Logger::log("Button8 " + remoteIpAdres + " " + remotePort);
+
+		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
+		MessageASIO::Message message( 1, "Robot");
+		MessageASIO::Message message2( 1, "Name:" + RobotWorld::getRobotWorld().getRobot().get()->getName());
+		MessageASIO::Message message3( 1, "Positiex:" + std::to_string(RobotWorld::getRobotWorld().getRobot().get()->getPosition().x));
+		MessageASIO::Message message4( 1, "Positiey:" + std::to_string(RobotWorld::getRobotWorld().getRobot().get()->getPosition().y));
+		MessageASIO::Message message5 (1, "end");
+		Logger::log("Sending Robot...");
+		c1ient.dispatchMessage( message);
+		c1ient.dispatchMessage( message2);
+		c1ient.dispatchMessage( message3);
+		c1ient.dispatchMessage( message4);
+		c1ient.dispatchMessage( message5);
+	}
+}

@@ -145,6 +145,10 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
+
+		void getData(std::vector<std::string>& rawData);
+
+
 		const AStar& getAStar() const
 		{
 			return astar;
@@ -236,6 +240,13 @@ class Robot :	public AbstractAgent,
 
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
+
+		std::vector<std::string> rawRobotData;	//zero place: Robot
+											//first place: Name
+											//second place: PositionX
+											//third place: PositionY
+											//fourth place: End
+		std::vector<std::string> robotData;
 };
 
 #endif // ROBOT_HPP_

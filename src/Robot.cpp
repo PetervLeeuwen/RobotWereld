@@ -15,6 +15,9 @@
 #include "Message.hpp"
 #include "ConfigFile.hpp"
 
+#include<regex>
+#include<string>
+
 /**
  *
  */
@@ -290,6 +293,7 @@ void Robot::stopCommunicating()
 	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getPort(), shared_from_this());
 	MessageASIO::Message message( 1, "stop");
 	c1ient.dispatchMessage( message);
+	Logger::log("stop");
 	communicating = false;
 }
 /**
@@ -298,7 +302,29 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
+	rawRobotData.push_back(aMessage.asString());
+	if(aMessage.asString().compare("end")){
+		getData(rawRobotData);
+	}
 	aMessage.setBody( "Goodbye cruel world!");
+}
+
+
+void Robot::getData(std::vector<std::string>& rawData){
+	std::regex r("\\:([a-zA-Z]+)");
+
+	for(int i = 1; i < rawData.size(); i++){//i = 1 omdat op positie 0 het woord Robot zit
+		std::sregex_token_iterator it(rawData[i].begin(), rawData[i].end(), r, 0);
+		std::sregex_token_iterator end;
+
+		while (it != end) {
+			robotData[i].push_back(std::stoi(*it));
+			it++;
+		}
+	}
+	for(std::vector<std::string>::iterator it = robotData.begin(); it != robotData.end(); ++it) {
+	    Logger::log(*it);
+	}
 }
 /**
  *
