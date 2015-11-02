@@ -325,15 +325,12 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
-<<<<<<< HEAD
 	rawRobotData.push_back(aMessage.asString());
 	if(aMessage.asString().compare("end")){
 		getData(rawRobotData);
 	}
 	aMessage.setBody( "Goodbye cruel world!");
-=======
 	aMessage.setBody( aMessage.asString() + " Server reponse");
->>>>>>> origin/Multiple-Robots
 }
 
 
