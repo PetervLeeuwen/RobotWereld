@@ -333,7 +333,7 @@ void Robot::handleRequest( MessageASIO::Message& aMessage)
 
 	if(gettingData){
 		rawRobotData.push_back(aMessage.asString());
-		if(aMessage.asString().compare("end")){
+		if(std::string("endabc").compare(aMessage.asString())){
 			Logger::log("vector printen");
 			for (auto i = rawRobotData.begin(); i != rawRobotData.end(); ++i){
 			    std::string dezeshit = *i;

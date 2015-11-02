@@ -443,25 +443,17 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 		Logger::log("Button8 " + remoteIpAdres + " " + remotePort);
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
-		Logger::log("beginnen met messages");
 		MessageASIO::Message message( 1, "robot");
-		Logger::log("message 1 gemaakt");
 		MessageASIO::Message message2( 1, "Name:" + RobotWorld::getRobotWorld().getRobot().get()->getName());
-		Logger::log("message 2 gemaaakt");
+		c1ient.dispatchMessage( message);
+		c1ient.dispatchMessage( message2);
 		MessageASIO::Message message3( 1, "Positiex:" + std::to_string(RobotWorld::getRobotWorld().getRobot().get()->getPosition().x));
-		Logger::log("message 3 gemaaakt");
 		MessageASIO::Message message4( 1, "Positiey:" + std::to_string(RobotWorld::getRobotWorld().getRobot().get()->getPosition().y));
 		MessageASIO::Message message5 (1, "end");
 		Logger::log("Sending Robot...");
-		c1ient.dispatchMessage( message);
-		Logger::log("message 1 dispatched");
-		c1ient.dispatchMessage( message2);
-		Logger::log("message 2 dispatched");
+		Sleep(500);
 		c1ient.dispatchMessage( message3);
-		Logger::log("message 3 dispatched");
 		c1ient.dispatchMessage( message4);
-		Logger::log("message 4 dispatched");
 		c1ient.dispatchMessage( message5);
-		Logger::log("message 5 dispatched");
 	}
 }
