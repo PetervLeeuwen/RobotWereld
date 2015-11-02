@@ -51,6 +51,13 @@ class Robot :	public AbstractAgent,
 		/**
 		 *
 		 */
+		Robot(	const std::string& aName,
+				const Point& aPosition,
+				const bool& aOriginal,
+				const long long& aId);
+		/**
+		 *
+		 */
 		bool operator==(const Robot& b);
 		/**
 		 *
@@ -210,8 +217,10 @@ class Robot :	public AbstractAgent,
 		 * Returns a description of the object with all data of the object usable for debugging
 		 */
 		virtual std::string asDebugString() const;
-
-		const ObjectId& getRobotId() const
+		/**
+		 *
+		 */
+		const long long& getRobotId() const
 		{
 			return robotId;
 		}
@@ -240,7 +249,7 @@ class Robot :	public AbstractAgent,
 		bool gettingData = false;
 
 		std::string name;
-		ObjectId robotId;
+		long long robotId;
 
 		Size size;
 		Point position;

@@ -11,11 +11,14 @@
 #include "Shape2DUtils.hpp"
 #include <iostream>
 #include <vector>
+#include "Message.hpp"
 #include "Thread.hpp"
 #include "Logger.hpp"
 #include "Client.hpp"
-#include "Message.hpp"
 #include "ConfigFile.hpp"
+
+#include "Wall.hpp"
+#include "Goal.hpp"
 
 /**
  * IDs for the controls and the menu commands
@@ -271,15 +274,20 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 
 
 	sizer->Add( makeButton( panel,
-	                        "Populate",
+	                        "Populate part 1",
 	                        [this](CommandEvent &anEvent){this->OnButton3Clicked(anEvent);}),
 	            GBPosition( 1, 0),
+	            GBSpan( 1, 1), EXPAND);
+	sizer->Add( makeButton( panel,
+	                        "Populate part 2",
+	                        [this](CommandEvent &anEvent){this->OnButton9Clicked(anEvent);}),
+	            GBPosition( 1, 1),
 	            GBSpan( 1, 1), EXPAND);
 
 	sizer->Add( makeButton( panel,
 	                        "Unpopulate",
 	                        [this](CommandEvent &anEvent){this->OnButton4Clicked(anEvent);}),
-	            GBPosition( 1, 1),
+	            GBPosition( 1, 2),
 	            GBSpan( 1, 1), EXPAND);
 
 
@@ -359,11 +367,20 @@ void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Sto
 /**
  *
  */
-void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate
+void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate part1
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	robotWorldCanvas->populate( 3);
+	robotWorldCanvas->populatePart1();
+}
+/**
+ *
+ */
+void MainFrameWindow::OnButton9Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate part2
+{
+	Logger::log( __PRETTY_FUNCTION__);
+
+	robotWorldCanvas->populatePart2();
 }
 /**
  *
@@ -443,17 +460,58 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 		Logger::log("Button8 " + remoteIpAdres + " " + remotePort);
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
-		MessageASIO::Message message( 1, "robot");
-		MessageASIO::Message message2( 1, "Name:" + RobotWorld::getRobotWorld().getRobot().get()->getName());
-		c1ient.dispatchMessage( message);
-		c1ient.dispatchMessage( message2);
-		MessageASIO::Message message3( 1, "Positiex:" + std::to_string(RobotWorld::getRobotWorld().getRobot().get()->getPosition().x));
-		MessageASIO::Message message4( 1, "Positiey:" + std::to_string(RobotWorld::getRobotWorld().getRobot().get()->getPosition().y));
-		MessageASIO::Message message5 (1, "end");
-		Logger::log("Sending Robot...");
-		Sleep(500);
-		c1ient.dispatchMessage( message3);
-		c1ient.dispatchMessage( message4);
-		c1ient.dispatchMessage( message5);
+
+		for(RobotPtr robot : RobotWorld::getRobotWorld().getRobots())
+		{
+			if(robot->original)
+			{
+				MessageASIO::Message message( 1, "robot");
+				c1ient.dispatchMessage( message);
+				MessageASIO::Message message2( 1, "Name:" + to_string(robot->getName()));
+				c1ient.dispatchMessage( message2);
+				MessageASIO::Message message3( 1, "Pos_x:" + std::to_string(robot->getPosition().x));
+				c1ient.dispatchMessage( message3);
+				MessageASIO::Message message4( 1, "Pos_y:" + std::to_string(robot->getPosition().y));
+				c1ient.dispatchMessage( message4);
+				MessageASIO::Message message5( 1, "Id:" + std::to_string(robot->getRobotId()));
+				c1ient.dispatchMessage( message5);
+				MessageASIO::Message message6 (1, "end");
+				c1ient.dispatchMessage( message6);
+			}
+		}
+		Logger::log("Sending Robots...");
+		for(WallPtr wall : RobotWorld::getRobotWorld().getWalls())
+		{
+			MessageASIO::Message message( 1, "wall");
+			c1ient.dispatchMessage( message);
+			MessageASIO::Message message2( 1, "pos_1x:" + std::to_string(wall->getPoint1().x));
+			c1ient.dispatchMessage( message2);
+			MessageASIO::Message message3( 1, "pos_1y:" + std::to_string(wall->getPoint1().y));
+			c1ient.dispatchMessage( message3);
+			MessageASIO::Message message4( 1, "pos_2x:" + std::to_string(wall->getPoint2().x));
+			c1ient.dispatchMessage( message4);
+			MessageASIO::Message message5( 1, "pos_2y:" + std::to_string(wall->getPoint2().y));
+			c1ient.dispatchMessage( message5);
+			MessageASIO::Message message6 (1, "end");
+			c1ient.dispatchMessage( message6);
+		}
+		Logger::log("Sending Walls...");
+		for(GoalPtr goal : RobotWorld::getRobotWorld().getGoals())
+		{
+			if(goal->original)
+			{
+				MessageASIO::Message message( 1, "goal");
+				c1ient.dispatchMessage( message);
+				MessageASIO::Message message2( 1, "Name:" + goal->getName());
+				c1ient.dispatchMessage( message2);
+				MessageASIO::Message message3( 1, "Pos_y:" + std::to_string(goal->getPosition().x));
+				c1ient.dispatchMessage( message3);
+				MessageASIO::Message message4( 1, "Pos_x:" + std::to_string(goal->getPosition().y));
+				c1ient.dispatchMessage( message4);
+				MessageASIO::Message message6 (1, "end");
+				c1ient.dispatchMessage( message6);
+			}
+		}
+		Logger::log("Sending goals...");
 	}
 }

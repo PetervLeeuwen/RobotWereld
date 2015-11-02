@@ -18,6 +18,10 @@
 #include<regex>
 #include<string>
 
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>
+
 /**
  *
  */
@@ -30,11 +34,11 @@ Robot::Robot( const std::string& aName) :
 				stop(true),
 				communicating(false),
 				original(true),
-				robotId(ObjectId::newObjectId())
+				robotId(1)
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
-
-//	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
+	std::srand(time(NULL));
+	robotId = (rand() % 899999999 + 100000000);
 }
 /**
  *
@@ -49,10 +53,11 @@ Robot::Robot(	const std::string& aName,
 				stop(true),
 				communicating(false),
 				original(true),
-				robotId(ObjectId::newObjectId())
+				robotId(1)
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
-//	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
+	std::srand(time(NULL));
+	robotId = (rand() % 899999999 + 100000000);
 }
 /**
  *
@@ -68,10 +73,30 @@ Robot::Robot(	const std::string& aName,
 				stop(true),
 				communicating(false),
 				original(aOriginal),
-				robotId(ObjectId::newObjectId())
+				robotId(1)
 {
 	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
-//	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
+	std::srand(time(NULL));
+	robotId = (rand() % 899999999 + 100000000);
+}
+/**
+ *
+ */
+Robot::Robot(	const std::string& aName,
+				const Point& aPosition,
+				const bool& aOriginal,
+				const long long& aId) :
+				name( aName),
+				size( DefaultSize),
+				position( aPosition),
+				front( 0, 0),
+				speed( 0.0),
+				stop(true),
+				communicating(false),
+				original(aOriginal),
+				robotId(aId)
+{
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
 }
 /**
  *
@@ -325,43 +350,61 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
-
-	if(aMessage.asString().compare("robot") && !gettingData){
-		rawRobotData.push_back(aMessage.asString());
+	if(std::string("end").compare(aMessage.asString()) == 0)
+	{
+		gettingData = false;
+		getData(rawRobotData);
+		rawRobotData.clear();
+	}
+	else
+	{
 		gettingData = true;
 	}
 
 	if(gettingData){
 		rawRobotData.push_back(aMessage.asString());
-		if(std::string("endabc").compare(aMessage.asString())){
-			Logger::log("vector printen");
-			for (auto i = rawRobotData.begin(); i != rawRobotData.end(); ++i){
-			    std::string dezeshit = *i;
-			    Logger::log(dezeshit);
-			}
-			getData(rawRobotData);
-			gettingData = false;
-		}
 	}
 	aMessage.setBody( aMessage.asString() + " Server reponse");
 }
 
 
 void Robot::getData(std::vector<std::string>& rawData){
-	std::regex r("\\:([a-zA-Z]+)");
-
-	for(int i = 1; i < rawData.size(); i++){//i = 1 omdat op positie 0 het woord Robot zit
-		std::sregex_token_iterator it(rawData[i].begin(), rawData[i].end(), r, 0);
-		std::sregex_token_iterator end;
-
-		while (it != end) {
-			robotData[i].push_back(std::stoi(*it));
-			it++;
+	Logger::log("converting data");
+	std::string type = "";
+	std::vector<std::string> newData;
+	for(auto regel : rawData){
+		if(std::string("").compare(type) == 0)
+		{
+			type = regel;
+			continue;
 		}
+		if(std::string("end").compare(regel) == 0)
+		{
+			continue;
+		}
+		std::smatch match;
+		std::regex reg("\\:([a-zA-Z]+|[0-9]+)");
+		regex_search(regel, match, reg);
+		std::string match1(match[1]);
+		newData.push_back(match1);
 	}
-	for(std::vector<std::string>::iterator it = robotData.begin(); it != robotData.end(); ++it) {
-	    Logger::log(*it);
+	if(std::string("robot").compare(type) == 0)
+	{
+		Logger::log("Data to robot" + std::to_string(std::atoi(newData[3].c_str())));
+		RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
 	}
+	if(std::string("wall").compare(type) == 0)
+	{
+		Logger::log("Data to wall");
+		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
+	}
+	if(std::string("goal").compare(type) == 0)
+	{
+		Logger::log("Data to goal");
+		RobotWorld::getRobotWorld().newGoal( newData[0], Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false);
+	}
+	type = "";
+	newData.clear();
 }
 /**
  *

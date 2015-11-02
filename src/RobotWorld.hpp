@@ -33,8 +33,17 @@ public:
 	 *
 	 */
 	RobotPtr newRobot(const std::string& aName,
-			const Point& aPosition = Point(-1, -1),
-			bool aNotifyObservers = true);
+			const Point& aPosition,
+			bool aNotifyObservers,
+			bool original,
+			long long aId);
+	/**
+	 *
+	 */
+	RobotPtr newRobot(const std::string& aName,
+			const Point& aPosition,
+			bool aNotifyObservers,
+			bool original);
 	/**
 	 *
 	 */
@@ -45,7 +54,8 @@ public:
 	 */
 	GoalPtr newGoal(const std::string& aName,
 			const Point& aPosition = Point(-1, -1),
-			bool aNotifyObservers = true);
+			bool aNotifyObservers = true,
+			bool original = true);
 	/**
 	 *
 	 */
@@ -106,7 +116,11 @@ public:
 	/**
 	 *
 	 */
-	void populate(int aNumberOfWalls = 2);
+	void populatePart1();
+	/**
+	 *
+	 */
+	void populatePart2();
 	/**
 	 *
 	 */
@@ -132,7 +146,7 @@ public:
 	/**
 	 *
 	 */
-	void updateRobotPosition(ObjectId id,Point location);
+	void updateRobotPosition(long long id,Point location);
 	/**
 	 *
 	 */

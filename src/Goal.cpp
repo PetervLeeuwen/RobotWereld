@@ -15,9 +15,10 @@ Goal::Goal( const std::string& aName) :
  *
  */
 Goal::Goal( const std::string& aName,
-			const Point& aPosition) :
+			const Point& aPosition,
+			const bool& aOrginal) :
 				WayPoint( aName, aPosition),
-				original(true)
+				original(aOrginal)
 {
 }
 /**

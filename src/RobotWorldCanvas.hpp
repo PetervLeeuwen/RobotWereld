@@ -160,7 +160,8 @@ class RobotWorldCanvas :	public ScrolledCanvas,
 		/**
 		 * Asks the world to populates itself with a robot, a goal and the given number of walls
 		 */
-		void populate( int aNumberOfWalls = 2);
+		void populatePart1();
+		void populatePart2();
 		/**
 		 * Removes everything from the world
 		 */

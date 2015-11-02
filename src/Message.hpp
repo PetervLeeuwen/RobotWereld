@@ -150,9 +150,10 @@ namespace MessageASIO
 
 			std::string asString() const
 			{
-				std::ostringstream os;
+				return message;
+				/*std::ostringstream os;
 				os << getHeader().asString() << ":\t" << message;
-				return os.str();
+				return os.str();*/
 			}
 
 			char messageType;

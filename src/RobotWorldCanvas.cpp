@@ -432,9 +432,16 @@ void RobotWorldCanvas::handleBackGroundNotification()
 /**
  *
  */
-void RobotWorldCanvas::populate( int aNumberOfWalls /*= 2*/)
+void RobotWorldCanvas::populatePart1()
 {
-	RobotWorld::getRobotWorld().populate(aNumberOfWalls);
+	RobotWorld::getRobotWorld().populatePart1();
+}
+/**
+ *
+ */
+void RobotWorldCanvas::populatePart2()
+{
+	RobotWorld::getRobotWorld().populatePart2();
 }
 /**
  *
@@ -888,7 +895,7 @@ void RobotWorldCanvas::handleAddRobot( CommandEvent& UNUSEDPARAM(event))
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	ShapePtr robot( new RobotShape( RobotWorld::getRobotWorld().newRobot( "Thijs", popupPoint), this));
+	ShapePtr robot( new RobotShape( RobotWorld::getRobotWorld().newRobot( "Jomama", popupPoint,true,true), this));
 	shapes.push_back( robot);
 
 	Refresh();
