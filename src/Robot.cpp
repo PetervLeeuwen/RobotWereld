@@ -325,11 +325,24 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
-	rawRobotData.push_back(aMessage.asString());
-	if(aMessage.asString().compare("end")){
-		getData(rawRobotData);
+
+	if(aMessage.asString().compare("robot") && !gettingData){
+		rawRobotData.push_back(aMessage.asString());
+		gettingData = true;
 	}
-	aMessage.setBody( "Goodbye cruel world!");
+
+	if(gettingData){
+		rawRobotData.push_back(aMessage.asString());
+		if(aMessage.asString().compare("end")){
+			Logger::log("vector printen");
+			for (auto i = rawRobotData.begin(); i != rawRobotData.end(); ++i){
+			    std::string dezeshit = *i;
+			    Logger::log(dezeshit);
+			}
+			getData(rawRobotData);
+			gettingData = false;
+		}
+	}
 	aMessage.setBody( aMessage.asString() + " Server reponse");
 }
 

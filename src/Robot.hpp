@@ -237,6 +237,8 @@ class Robot :	public AbstractAgent,
 		 */
 		bool collision();
 	private:
+		bool gettingData = false;
+
 		std::string name;
 		ObjectId robotId;
 
