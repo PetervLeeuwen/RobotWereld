@@ -363,7 +363,7 @@ void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Pop
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	robotWorldCanvas->populate( 2);
+	robotWorldCanvas->populate( 3);
 }
 /**
  *

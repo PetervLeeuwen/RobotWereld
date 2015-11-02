@@ -32,7 +32,7 @@ Robot::Robot( const std::string& aName) :
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
 
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
@@ -51,7 +51,7 @@ Robot::Robot(	const std::string& aName,
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -67,10 +67,10 @@ Robot::Robot(	const std::string& aName,
 				speed( 0.0),
 				stop(true),
 				communicating(false),
-				original(true),
+				original(aOriginal),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,150,50)),true);
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -408,7 +408,13 @@ void Robot::drive(GoalPtr goal)
 			position.x = vertex.x;
 			position.y = vertex.y;
 
-			if (arrived(goal) || collision())
+			if(arrived(goal))
+			{
+				notifyObservers();
+				speed = 0;
+				break;
+			}
+			if (collision())
 			{
 				notifyObservers();
 				break;
@@ -505,4 +511,13 @@ bool Robot::collision()
 		}
 	}
 	return false;
+}
+
+void Robot::handleLaserDistanceSensor(bool triggerd)
+{
+	if(triggerd){
+		speed = 0;
+	}else{
+		speed = 10;
+	}
 }

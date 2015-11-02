@@ -17,11 +17,13 @@
 class DistanceStimulus : public AbstractStimulus
 {
 	public:
-		DistanceStimulus( unsigned long aDistance) :
-						distance( aDistance)
+		DistanceStimulus( unsigned long aDistance, unsigned long aWith) :
+						distance( aDistance),
+						with(aWith)
 		{
 		}
 		unsigned long distance;
+		unsigned long with;
 };
 // class DistanceStimulus
 
@@ -30,17 +32,20 @@ class DistancePercept : public AbstractPercept
 	public:
 		DistancePercept( const DistanceStimulus& aDistanceStimulus) :
 						distance( aDistanceStimulus.distance),
+						with(aDistanceStimulus.with),
 						triggerd(false)
 		{
 		}
-		DistancePercept( unsigned long aDistance) :
+		DistancePercept( unsigned long aDistance, unsigned long aWith) :
 						distance( aDistance),
+						with(aWith),
 						triggerd(false)
 		{
 		}
 		bool check(Robot *agent);
 
 		unsigned long distance;
+		unsigned long with;
 		bool triggerd;
 };
 //	class DistancePercept
@@ -56,7 +61,7 @@ class LaserDistanceSensor : public AbstractSensor
 		/**
 		 *
 		 */
-		LaserDistanceSensor( Robot* aRobot, unsigned long aSensorRange);
+		LaserDistanceSensor( Robot* aRobot, unsigned long aSensorRange, unsigned long aSensorWith);
 		/**
 		 *
 		 */
@@ -85,6 +90,7 @@ class LaserDistanceSensor : public AbstractSensor
 	protected:
 	private:
 		unsigned long sensorRange;
+		unsigned long sensorWith;
 
 };
 

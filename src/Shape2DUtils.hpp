@@ -89,6 +89,10 @@ class Shape2DUtils
 		static unsigned long getDistanceBetweenPoints(	const Point& aPoint,
 																		const Point& bPoint);
 		/**
+		 *
+		 */
+		static bool isPointInRangeOfLine(Point aPoint, Point bPoint, Point cPoint, unsigned long distance, unsigned long range);
+		/**
 		 * Enum to find the point of a rectangle
 		 */
 		enum CompassPoint

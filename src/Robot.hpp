@@ -187,6 +187,10 @@ class Robot :	public AbstractAgent,
 		 */
 		void startMoving();
 		/**
+		 *
+		 */
+		void handleLaserDistanceSensor(bool triggerd);
+		/**
 		 * If a request is handled, any response *must* be set in the Message argument!
 		 */
 		virtual void handleRequest( MessageASIO::Message& aMessage);

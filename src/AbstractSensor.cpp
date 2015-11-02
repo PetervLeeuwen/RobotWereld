@@ -62,7 +62,6 @@ void AbstractSensor::setOff()
  */
 void AbstractSensor::sendPercept( std::shared_ptr< AbstractPercept > anAbstractPercept)
 {
-	Logger::log("Added a percept");
 	agent->addPercept( anAbstractPercept);
 }
 /**
@@ -70,7 +69,6 @@ void AbstractSensor::sendPercept( std::shared_ptr< AbstractPercept > anAbstractP
  */
 std::shared_ptr< AbstractPercept > AbstractSensor::removePercept()
 {
-	Logger::log("removed a percept");
 	return agent->removePercept();
 }
 /**
@@ -114,8 +112,14 @@ void AbstractSensor::consume(Robot *aRobot)
 		std::shared_ptr< AbstractPercept > percept = removePercept();
 		if(DistancePercept* d = dynamic_cast<DistancePercept*>(percept.get()))
 		{
-			if(d->check(aRobot)){
+			if(d->check(aRobot))
+			{
+				aRobot->handleLaserDistanceSensor(true);
 				Logger::log("Sensor has been triggerd for" + aRobot->getName());
+			}
+			else
+			{
+				aRobot->handleLaserDistanceSensor(false);
 			}
 		}
 	}

@@ -232,19 +232,19 @@ const std::vector< WallPtr >& RobotWorld::getWalls() const
  */
 void RobotWorld::populate( int aNumberOfWalls /*= 2*/)
 {
-	RobotWorld::getRobotWorld().newRobot( "Peter", Point( 50, 50),false);
-	RobotWorld::getRobotWorld().newRobot( "Thomas", Point( 100, 50),false);
+	RobotWorld::getRobotWorld().newRobot( "Peter", Point( 75, 75),false);
+	RobotWorld::getRobotWorld().newRobot( "Thomas", Point( 450, 75),false);
 
-	static Point coordinates[] = { Point( 100, 400), Point( 350, 300),
-	Point( 300, 100),
-									Point( 350, 200) };
+	static Point coordinates[] = { Point( 100, 240), Point( 400, 240),
+	Point( 0, 340),Point( 180, 320),
+	Point( 310, 340),Point( 500, 340)};
 
 	for (int i = 0; i < 2 * aNumberOfWalls; i += 2)
 	{
 		RobotWorld::getRobotWorld().newWall( coordinates[i], coordinates[i + 1],false);
 	}
 
-	RobotWorld::getRobotWorld().newGoal( "Leon", Point( 450, 450),false);
+	RobotWorld::getRobotWorld().newGoal( "Leon", Point( 250, 450),false);
 
 	notifyObservers();
 }

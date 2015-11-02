@@ -22,10 +22,16 @@ bool DistancePercept::check(Robot *agent)
 		{
 			continue;
 		}
-		if(Shape2DUtils::getDistanceBetweenPoints(robot.get()->getPosition(),
-					agent->getPosition())
-				<= distance)
-		{
+
+		double angle = Shape2DUtils::getAngle( agent->getFront()) + 0.5 * PI;
+		Point agentPos = agent->getPosition();
+
+		if(Shape2DUtils::isPointInRangeOfLine(
+					agentPos,
+					Point(agentPos.x + std::cos( angle - 0.5 * PI) * distance, agentPos.y + std::sin( angle - 0.5 * PI) * distance),
+					robot.get()->getPosition(),
+					distance,
+					with) && robot.get()->getSpeed() == 10){
 			triggerd = true;
 		}
 	}
@@ -35,15 +41,17 @@ bool DistancePercept::check(Robot *agent)
  *
  */
 LaserDistanceSensor::LaserDistanceSensor():
-		sensorRange(0)
+		sensorRange(0),
+		sensorWith(0)
 {
 }
 /**
  *
  */
-LaserDistanceSensor::LaserDistanceSensor(Robot* aRobot, unsigned long aSensorRange):
+LaserDistanceSensor::LaserDistanceSensor(Robot* aRobot, unsigned long aSensorRange,unsigned long aSensorWith):
 		AbstractSensor(aRobot),
-		sensorRange(aSensorRange)
+		sensorRange(aSensorRange),
+		sensorWith(aSensorWith)
 {
 }
 /**
@@ -57,7 +65,7 @@ LaserDistanceSensor::~LaserDistanceSensor()
  */
 std::shared_ptr< AbstractStimulus > LaserDistanceSensor::getStimulus()
 {
-	std::shared_ptr< AbstractStimulus > distanceStimulus( new DistanceStimulus(sensorRange));
+	std::shared_ptr< AbstractStimulus > distanceStimulus( new DistanceStimulus(sensorRange, sensorWith));
 	return distanceStimulus;
 }
 /**
@@ -66,7 +74,7 @@ std::shared_ptr< AbstractStimulus > LaserDistanceSensor::getStimulus()
 std::shared_ptr< AbstractPercept > LaserDistanceSensor::getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractStimulus)
 {
 	DistanceStimulus* distanceStimulus = dynamic_cast< DistanceStimulus* >( anAbstractStimulus.get());
-	return std::shared_ptr< AbstractPercept >( new DistancePercept( distanceStimulus->distance));
+	return std::shared_ptr< AbstractPercept >( new DistancePercept( distanceStimulus->distance, distanceStimulus->with));
 }
 /**
  *

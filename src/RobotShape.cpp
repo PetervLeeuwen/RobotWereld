@@ -144,9 +144,9 @@ void RobotShape::draw( wxDC& dc)
 
 	double angle = Shape2DUtils::getAngle( getRobot()->getFront()) + 0.5 * PI;
 
+	dc.SetPen( wxPen( WXSTRING( "BLACK"), 20, wxSOLID));
+	dc.DrawLine( centre.x, centre.y, centre.x + std::cos( angle - 0.5 * PI) * 150, centre.y + std::sin( angle - 0.5 * PI) * 150);
 	dc.SetPen( wxPen( WXSTRING( "BLACK"), 1, wxSOLID));
-	dc.DrawLine( centre.x, centre.y, centre.x + std::cos( angle - 0.5 * PI) * 50, centre.y + std::sin( angle - 0.5 * PI) * 50);
-
 	// Bounty of 0.25 points for anyone who makes the name turn
 	// with the front of the robot, while text centre being displayed in the
 	// centre of the robot, bottom of the text to the back of the robot.

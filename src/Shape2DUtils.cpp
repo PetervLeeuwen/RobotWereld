@@ -1,6 +1,7 @@
 #include "Shape2DUtils.hpp"
 #include <sstream>
 #include <algorithm>
+#include "Logger.hpp"
 
 /**
  *
@@ -333,6 +334,32 @@ unsigned long Shape2DUtils::getDistanceBetweenPoints(	const Point& aPoint,
 	}
 	return result;
 	//return getCompassPoint( aPoint, aSize, aBorderPoint,aRadius) == aCompassPoint;
+}
+/**
+ *
+ */
+bool Shape2DUtils::isPointInRangeOfLine(Point aPoint, Point bPoint, Point cPoint, unsigned long distance, unsigned long range)
+{
+	if(getDistanceBetweenPoints(aPoint,bPoint) <= distance)
+	{
+		long x1 = aPoint.x;
+		long y1 = aPoint.y;
+		long x2 = bPoint.x - x1;
+		long y2 = bPoint.y - y1;
+		long mx = cPoint.x - x1;
+		long my = cPoint.y - y1;
+		long len = sqrt(x2 * x2 + y2 * y2);
+		double rx = abs((mx*y2-my*x2)/len);
+		double ry = (mx*x2+my*y2)/len;
+		double dist = std::max(std::max(rx,ry-len),-ry);
+
+		if(dist < range)
+		{
+			Logger::log(" " + std::to_string(dist));
+			return true;
+		}
+	}
+	return false;
 }
 /**
  *
