@@ -53,7 +53,7 @@ namespace MessageASIO
 				} else
 				{
 					delete aSession;
-					throw std::runtime_error( __PRETTY_FUNCTION__ + std::string( ": ") + error.message());
+					throw std::runtime_error( __PRETTY_FUNCTION__ + std::string( " error: ") + error.message());
 				}
 			}
 		private:

@@ -32,7 +32,7 @@ Robot::Robot( const std::string& aName) :
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
 
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
@@ -51,7 +51,26 @@ Robot::Robot(	const std::string& aName,
 				original(true),
 				robotId(ObjectId::newObjectId())
 {
-	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this)));
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
+//	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
+}
+/**
+ *
+ */
+Robot::Robot(	const std::string& aName,
+				const Point& aPosition,
+				const bool& aOriginal) :
+				name( aName),
+				size( DefaultSize),
+				position( aPosition),
+				front( 0, 0),
+				speed( 0.0),
+				stop(true),
+				communicating(false),
+				original(true),
+				robotId(ObjectId::newObjectId())
+{
+	attachSensor(std::shared_ptr< AbstractSensor >(new LaserDistanceSensor(this,50)),true);
 //	attachActuator(std::shared_ptr< AbstractActuator>(new SteeringActuator(this)));
 }
 /**
@@ -157,6 +176,10 @@ void Robot::stopActing()
 	//robotThread.interrupt();
 	stop = true;
 	robotThread.join();
+	for (std::shared_ptr< AbstractSensor > sensor : sensors)
+	{
+		sensor->setOff();
+	}
 }
 /**
  *
@@ -283,7 +306,7 @@ void Robot::handleNotification()
 void Robot::startCommunicating()
 {
 	communicating = true;
-	CommunicationService::getCommunicationService().runRobotServer(this/*, port*/);
+	CommunicationService::getCommunicationService().runRobotServer(this,12345);
 }
 /**
  *
@@ -302,11 +325,15 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
+<<<<<<< HEAD
 	rawRobotData.push_back(aMessage.asString());
 	if(aMessage.asString().compare("end")){
 		getData(rawRobotData);
 	}
 	aMessage.setBody( "Goodbye cruel world!");
+=======
+	aMessage.setBody( aMessage.asString() + " Server reponse");
+>>>>>>> origin/Multiple-Robots
 }
 
 
@@ -368,7 +395,7 @@ void Robot::drive(GoalPtr goal)
 		for (std::shared_ptr< AbstractSensor > sensor : sensors)
 		{
 			//enables and starts sensor. Starts sensor thread for each sensor.
-			sensor->setOn();
+			sensor->setOn(this,100);
 		}
 
 		if (speed == 0.0)
@@ -453,7 +480,13 @@ bool Robot::operator ==(const Robot& b)
 {
 	return robotId == b.getRobotId();
 }
-
+/**
+ *
+ */
+bool Robot::operator !=(const Robot& b)
+{
+	return robotId != b.getRobotId();
+}
 /**
  *
  */

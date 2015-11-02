@@ -84,6 +84,11 @@ class Shape2DUtils
 		static Point rotate(	const Point& aPoint,
 								double anAngle);
 		/**
+		 *
+		 */
+		static unsigned long getDistanceBetweenPoints(	const Point& aPoint,
+																		const Point& bPoint);
+		/**
 		 * Enum to find the point of a rectangle
 		 */
 		enum CompassPoint

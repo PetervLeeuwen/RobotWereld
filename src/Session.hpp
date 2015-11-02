@@ -12,6 +12,7 @@
 #include "Message.hpp"
 #include "CommunicationService.hpp"
 #include "Robot.hpp"
+#include "Logger.hpp"
 
 namespace MessageASIO
 {
@@ -103,7 +104,7 @@ namespace MessageASIO
 					// context of this example. If any "strange" things happen, enable the next line. A "end of file"
 					// exception will happen on "normal" termination of the message exchange...
 
-					//throw std::runtime_error(__PRETTY_FUNCTION__ + std::string(": ") + error.message());
+					throw std::runtime_error(__PRETTY_FUNCTION__ + std::string(": ") + error.message());
 				}
 			}
 
@@ -226,10 +227,12 @@ namespace MessageASIO
 			{
 				// This is the place where any request message from a client should
 				// be handled
+				Logger::log("Server message read ");
 				robot->handleRequest( aMessage);
 
 				// We now just echo the message. In real life we would write our own
 				// response to the request.
+				Logger::log("Server message echo message ");
 				writeMessage( aMessage);
 
 				// This is part of the original application. If one wants a stop message
@@ -272,6 +275,7 @@ namespace MessageASIO
 
 			virtual void start()
 			{
+				Logger::log("Client write message ");
 				writeMessage( message);
 			}
 
@@ -282,6 +286,7 @@ namespace MessageASIO
 			{
 				// This is the place where any reply message from the server should
 				// be handled
+				Logger::log("Client handle response from server ");
 				robot->handleResponse( aMessage);
 
 				delete this;

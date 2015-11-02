@@ -9,8 +9,10 @@
 #define LASERDISTANCESENSOR_HPP_
 
 #include "Config.hpp"
-
+#include "Shape2DUtils.hpp"
 #include "AbstractSensor.hpp"
+#include "Robot.hpp"
+#include "RobotWorld.hpp"
 
 class DistanceStimulus : public AbstractStimulus
 {
@@ -27,18 +29,22 @@ class DistancePercept : public AbstractPercept
 {
 	public:
 		DistancePercept( const DistanceStimulus& aDistanceStimulus) :
-						distance( aDistanceStimulus.distance)
+						distance( aDistanceStimulus.distance),
+						triggerd(false)
 		{
 		}
 		DistancePercept( unsigned long aDistance) :
-						distance( aDistance)
+						distance( aDistance),
+						triggerd(false)
 		{
 		}
+		bool check(Robot *agent);
+
 		unsigned long distance;
+		bool triggerd;
 };
 //	class DistancePercept
 
-class Robot;
 
 class LaserDistanceSensor : public AbstractSensor
 {
@@ -50,7 +56,7 @@ class LaserDistanceSensor : public AbstractSensor
 		/**
 		 *
 		 */
-		LaserDistanceSensor( Robot* aRobot);
+		LaserDistanceSensor( Robot* aRobot, unsigned long aSensorRange);
 		/**
 		 *
 		 */
@@ -78,6 +84,7 @@ class LaserDistanceSensor : public AbstractSensor
 		//@}
 	protected:
 	private:
+		unsigned long sensorRange;
 
 };
 
