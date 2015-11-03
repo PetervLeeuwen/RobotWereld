@@ -22,10 +22,8 @@ void AbstractAgent::attachSensor( 	std::shared_ptr< AbstractSensor > aSensor,
 									bool attachSensorToAgent)
 {
 	sensors.push_back( aSensor);
-	Logger::log("new sensor added");
 	if (attachSensorToAgent)
 	{
-		Logger::log("sensor added to agent");
 		aSensor->attachAgent( this);
 	}
 }

@@ -369,7 +369,6 @@ void Robot::handleRequest( MessageASIO::Message& aMessage)
 
 
 void Robot::getData(std::vector<std::string>& rawData){
-	Logger::log("converting data");
 	std::string type = "";
 	std::vector<std::string> newData;
 	for(auto regel : rawData){
@@ -390,17 +389,14 @@ void Robot::getData(std::vector<std::string>& rawData){
 	}
 	if(std::string("robot").compare(type) == 0)
 	{
-		Logger::log("Data to robot" + std::to_string(std::atoi(newData[3].c_str())));
 		RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
 	}
 	if(std::string("wall").compare(type) == 0)
 	{
-		Logger::log("Data to wall");
 		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
 	}
 	if(std::string("goal").compare(type) == 0)
 	{
-		Logger::log("Data to goal");
 		RobotWorld::getRobotWorld().newGoal( newData[0], Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false);
 	}
 	type = "";

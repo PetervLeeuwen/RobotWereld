@@ -123,7 +123,6 @@ void AbstractSensor::consume(Robot *aRobot)
 			}
 		}
 	}
-	Logger::log("stopped with comsuming sensors");
 }
 
 void AbstractSensor::attachAgent( AbstractAgent* anAgent)
