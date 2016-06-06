@@ -367,7 +367,7 @@ GoalPtr RobotWorld::getGoal() const
 {
 	for(GoalPtr goal : goals)
 	{
-		if(goal.get()->original){
+		if(goal.get()->isOriginal()){
 			return goal;
 		}
 	}

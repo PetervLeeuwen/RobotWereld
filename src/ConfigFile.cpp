@@ -16,11 +16,12 @@
 #include "ConfigFile.hpp"
 
 ConfigFile::ConfigFile(){
-	loadFile();
+//	loadFile();
 }
 
 void ConfigFile::loadFile(std::string aFile)
 {
+	Logger::log("New config file " + aFile);
 	file = aFile;
 	loadFile();
 }
@@ -29,10 +30,12 @@ void ConfigFile::loadFile() {
 	std::ifstream ifStream(file);
 	if (ifStream.is_open()) {
 		std::getline(ifStream, ipaddress);
-		std::getline(ifStream, port);
+		std::getline(ifStream, localPort);
+		std::getline(ifStream, remotePort);
 		ifStream.close();
 		Logger::log("ConfigFile IPaddress: " + ipaddress);
-		Logger::log("ConfigFile Port: " + port);
+		Logger::log("ConfigFile Port: " + localPort);
+		Logger::log("ConfigFile Port: " + remotePort);
 	}
 	else
 	{
@@ -46,8 +49,12 @@ ConfigFile& ConfigFile::getInstance(){
 	return instance;
 }
 
-const std::string ConfigFile::getPort(){
-	return port;
+const std::string ConfigFile::getLocalPort(){
+	return localPort;
+}
+
+const std::string ConfigFile::getRemotePort(){
+	return remotePort;
 }
 
 const std::string ConfigFile::getIpaddress(){

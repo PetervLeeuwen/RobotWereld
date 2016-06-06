@@ -40,11 +40,12 @@ class Goal : public WayPoint
 		/**
 		 *
 		 */
-		bool original;
+		bool isOriginal(){return original;};
 		//@}
 	protected:
 
 	private:
+		bool original;
 
 };
 

@@ -331,20 +331,20 @@ void Robot::handleNotification()
  */
 void Robot::startCommunicating()
 {
-	short port = 12345;
-	if (MainApplication::isArgGiven( "-port"))
-	{
-		port = std::stoi(MainApplication::getArg( "-port").value);
-	}
+//	short port = 12345;
+//	if (MainApplication::isArgGiven( "-port"))
+//	{
+//		port = std::stoi(MainApplication::getArg( "-port").value);
+//	}
 	communicating = true;
-	CommunicationService::getCommunicationService().runRobotServer(this,port);
+	CommunicationService::getCommunicationService().runRobotServer(this,std::stoi(ConfigFile::getInstance().getLocalPort()));
 }
 /**
  *
  */
 void Robot::stopCommunicating()
 {
-	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getPort(), shared_from_this());
+	MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getRemotePort(), shared_from_this());
 	MessageASIO::Message message( 1, "stop");
 	c1ient.dispatchMessage( message);
 	Logger::log("stop");
@@ -395,14 +395,17 @@ void Robot::getData(std::vector<std::string>& rawData){
 	}
 	if(std::string("robot").compare(type) == 0)
 	{
+		Logger::log("Robot created");
 		RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
 	}
 	if(std::string("wall").compare(type) == 0)
 	{
+		Logger::log("Wall created");
 		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
 	}
 	if(std::string("goal").compare(type) == 0)
 	{
+		Logger::log("Goal created");
 		RobotWorld::getRobotWorld().newGoal( newData[0], Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false);
 	}
 	type = "";

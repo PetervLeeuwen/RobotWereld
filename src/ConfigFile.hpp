@@ -16,22 +16,27 @@ class ConfigFile {
 
 public:
 	virtual ~ConfigFile();
-	const std::string getPort();
+
 
 	static ConfigFile& getInstance();
 
 	const std::string getIpaddress();
 
+	const std::string getRemotePort();
 
+	const std::string getLocalPort();
+
+	void loadFile(std::string aFile);
 private:
 	ConfigFile();
 
 	void loadFile();
-	void loadFile(std::string aFile);
+
 
 	std::string file = "config.txt";
 	std::string ipaddress;
-	std::string port;
+	std::string localPort;
+	std::string remotePort;
 
 	static ConfigFile instance;
 };

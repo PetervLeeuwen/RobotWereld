@@ -58,8 +58,12 @@ class Wall : 	public ModelObject
 		 */
 		virtual std::string asDebugString() const;
 		//@}
+
+		bool isOriginal(){return original;}
 	private:
-		Point point1;Point point2;
+		Point point1;
+		Point point2;
+		bool original;
 };
 
 #endif // WALL_HPP_

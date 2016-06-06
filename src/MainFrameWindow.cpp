@@ -401,9 +401,16 @@ void MainFrameWindow::OnStartCommunicating( CommandEvent& UNUSEDPARAM(anEvent))/
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
+		if (MainApplication::isArgGiven( "-conf"))
+		{
+			Logger::log("Config file given");
+			ConfigFile::getInstance().loadFile(MainApplication::getArg( "-conf").value);
+		}
+
 		robot->startCommunicating();
 		Logger::log("IPaddress: " + ConfigFile::getInstance().getIpaddress());
-		Logger::log("Port: " + ConfigFile::getInstance().getPort());
+		Logger::log("Local Port: " + ConfigFile::getInstance().getLocalPort());
+		Logger::log("Remote Port: " + ConfigFile::getInstance().getRemotePort());
 	}
 }
 /**
@@ -416,20 +423,14 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if (robot)
 	{
-		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
-		std::string remotePort = ConfigFile::getInstance().getPort();
-		Logger::log("Button6 " + remoteIpAdres + " " + remotePort);
 
-		if (MainApplication::isArgGiven( "-ip"))
+		if (MainApplication::isArgGiven( "-conf"))
 		{
-			remoteIpAdres = MainApplication::getArg( "-ip").value;
-		}
-		if (MainApplication::isArgGiven( "-remote_port"))
-		{
-			remotePort = MainApplication::getArg( "-remote_port").value;
+			Logger::log("Config file given");
+			ConfigFile::getInstance().loadFile(MainApplication::getArg( "-conf").value);
 		}
 
-		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
+		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getRemotePort(), robot);
 		MessageASIO::Message message( 1, "Hello world!");
 		Logger::log("hello world");
 		c1ient.dispatchMessage( message);
@@ -460,7 +461,7 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 	RobotPtr robot = RobotWorld::getRobotWorld().getRobot();
 	if(robot){
 		std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
-		std::string remotePort = ConfigFile::getInstance().getPort();
+		std::string remotePort = ConfigFile::getInstance().getRemotePort();
 		Logger::log("Button8 " + remoteIpAdres + " " + remotePort);
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
@@ -486,23 +487,26 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 		Logger::log("Sending Robots...");
 		for(WallPtr wall : RobotWorld::getRobotWorld().getWalls())
 		{
-			MessageASIO::Message message( 1, "wall");
-			c1ient.dispatchMessage( message);
-			MessageASIO::Message message2( 1, "pos_1x:" + std::to_string(wall->getPoint1().x));
-			c1ient.dispatchMessage( message2);
-			MessageASIO::Message message3( 1, "pos_1y:" + std::to_string(wall->getPoint1().y));
-			c1ient.dispatchMessage( message3);
-			MessageASIO::Message message4( 1, "pos_2x:" + std::to_string(wall->getPoint2().x));
-			c1ient.dispatchMessage( message4);
-			MessageASIO::Message message5( 1, "pos_2y:" + std::to_string(wall->getPoint2().y));
-			c1ient.dispatchMessage( message5);
-			MessageASIO::Message message6 (1, "end");
-			c1ient.dispatchMessage( message6);
+			if(wall->isOriginal())
+			{
+				MessageASIO::Message message( 1, "wall");
+				c1ient.dispatchMessage( message);
+				MessageASIO::Message message2( 1, "pos_1x:" + std::to_string(wall->getPoint1().x));
+				c1ient.dispatchMessage( message2);
+				MessageASIO::Message message3( 1, "pos_1y:" + std::to_string(wall->getPoint1().y));
+				c1ient.dispatchMessage( message3);
+				MessageASIO::Message message4( 1, "pos_2x:" + std::to_string(wall->getPoint2().x));
+				c1ient.dispatchMessage( message4);
+				MessageASIO::Message message5( 1, "pos_2y:" + std::to_string(wall->getPoint2().y));
+				c1ient.dispatchMessage( message5);
+				MessageASIO::Message message6 (1, "end");
+				c1ient.dispatchMessage( message6);
+			}
 		}
 		Logger::log("Sending Walls...");
 		for(GoalPtr goal : RobotWorld::getRobotWorld().getGoals())
 		{
-			if(goal->original)
+			if(goal->isOriginal())
 			{
 				MessageASIO::Message message( 1, "goal");
 				c1ient.dispatchMessage( message);
