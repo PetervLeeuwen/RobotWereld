@@ -19,6 +19,12 @@ ConfigFile::ConfigFile(){
 	loadFile();
 }
 
+void ConfigFile::loadFile(std::string aFile)
+{
+	file = aFile;
+	loadFile();
+}
+
 void ConfigFile::loadFile() {
 	std::ifstream ifStream(file);
 	if (ifStream.is_open()) {

@@ -14,6 +14,7 @@
 #include "Client.hpp"
 #include "Message.hpp"
 #include "ConfigFile.hpp"
+#include "MainApplication.hpp"
 
 #include<regex>
 #include<string>
@@ -330,8 +331,13 @@ void Robot::handleNotification()
  */
 void Robot::startCommunicating()
 {
+	short port = 12345;
+	if (MainApplication::isArgGiven( "-port"))
+	{
+		port = std::stoi(MainApplication::getArg( "-port").value);
+	}
 	communicating = true;
-	CommunicationService::getCommunicationService().runRobotServer(this,12345);
+	CommunicationService::getCommunicationService().runRobotServer(this,port);
 }
 /**
  *

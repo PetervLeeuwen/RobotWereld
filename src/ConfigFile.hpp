@@ -27,6 +27,7 @@ private:
 	ConfigFile();
 
 	void loadFile();
+	void loadFile(std::string aFile);
 
 	std::string file = "config.txt";
 	std::string ipaddress;

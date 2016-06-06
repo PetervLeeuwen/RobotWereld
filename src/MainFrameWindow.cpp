@@ -262,25 +262,25 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 
 	sizer->Add( makeButton( panel,
 	                        "Start robot",
-	                        [this](CommandEvent &anEvent){this->OnButton1Clicked(anEvent);}),
+	                        [this](CommandEvent &anEvent){this->OnStartRobot(anEvent);}),
 	            GBPosition( 0, 0),
 	            GBSpan( 1, 1), EXPAND);
 
 	sizer->Add( makeButton( panel,
 	                        "Stop robot",
-	                        [this](CommandEvent &anEvent){this->OnButton2Clicked(anEvent);}),
+	                        [this](CommandEvent &anEvent){this->OnStopRobot(anEvent);}),
 	            GBPosition( 0, 1),
 	            GBSpan( 1, 1), EXPAND);
 
 
 	sizer->Add( makeButton( panel,
 	                        "Populate part 1",
-	                        [this](CommandEvent &anEvent){this->OnButton3Clicked(anEvent);}),
+	                        [this](CommandEvent &anEvent){this->OnPopulatePart1(anEvent);}),
 	            GBPosition( 1, 0),
 	            GBSpan( 1, 1), EXPAND);
 	sizer->Add( makeButton( panel,
 	                        "Populate part 2",
-	                        [this](CommandEvent &anEvent){this->OnButton9Clicked(anEvent);}),
+	                        [this](CommandEvent &anEvent){this->OnPopulatePart2(anEvent);}),
 	            GBPosition( 1, 1),
 	            GBSpan( 1, 1), EXPAND);
 
@@ -292,8 +292,8 @@ Panel* MainFrameWindow::initialiseButtonPanel()
 
 
 	sizer->Add( makeButton( panel,
-	                        "Start server",
-	                        [this](CommandEvent &anEvent){this->OnButton5Clicked(anEvent);}),
+	                        "Start communicating",
+	                        [this](CommandEvent &anEvent){this->OnStartCommunicating(anEvent);}),
 	            GBPosition( 2, 0),
 	            GBSpan( 1, 1), EXPAND);
 	sizer->Add( makeButton( panel,
@@ -353,21 +353,21 @@ void MainFrameWindow::OnAbout( CommandEvent& UNUSEDPARAM(anEvent))
 /**
  *
  */
-void MainFrameWindow::OnButton1Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Start Robot
+void MainFrameWindow::OnStartRobot( CommandEvent& UNUSEDPARAM(anEvent))//Start Robot
 {
 	RobotWorld::getRobotWorld().startActing();
 }
 /**
  *
  */
-void MainFrameWindow::OnButton2Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Stop Robot
+void MainFrameWindow::OnStopRobot( CommandEvent& UNUSEDPARAM(anEvent))//Stop Robot
 {
 	RobotWorld::getRobotWorld().stopActing();
 }
 /**
  *
  */
-void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate part1
+void MainFrameWindow::OnPopulatePart1( CommandEvent& UNUSEDPARAM(anEvent))//Populate part1
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -376,7 +376,7 @@ void MainFrameWindow::OnButton3Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Pop
 /**
  *
  */
-void MainFrameWindow::OnButton9Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Populate part2
+void MainFrameWindow::OnPopulatePart2( CommandEvent& UNUSEDPARAM(anEvent))//Populate part2
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -394,7 +394,7 @@ void MainFrameWindow::OnButton4Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Unp
 /**
  *
  */
-void MainFrameWindow::OnButton5Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Start communicating
+void MainFrameWindow::OnStartCommunicating( CommandEvent& UNUSEDPARAM(anEvent))//Start communicating
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
@@ -424,15 +424,19 @@ void MainFrameWindow::OnButton6Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Say
 		{
 			remoteIpAdres = MainApplication::getArg( "-ip").value;
 		}
-		if (MainApplication::isArgGiven( "-port"))
+		if (MainApplication::isArgGiven( "-remote_port"))
 		{
-			remotePort = MainApplication::getArg( "-port").value;
+			remotePort = MainApplication::getArg( "-remote_port").value;
 		}
 
 		MessageASIO::Client c1ient( CommunicationService::getCommunicationService().getIOService(), remoteIpAdres, remotePort, robot);
 		MessageASIO::Message message( 1, "Hello world!");
 		Logger::log("hello world");
 		c1ient.dispatchMessage( message);
+	}
+	else
+	{
+		Logger::log("CANT START CLIENT");
 	}
 }
 /**
