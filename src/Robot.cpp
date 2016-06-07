@@ -444,6 +444,7 @@ void Robot::getData(std::vector<std::string>& rawData){
 		{
 			if(robot.get()->robotId == std::atoi(newData[1].c_str()))
 			{
+				robot.get()->front = Vector(Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())), robot.get()->position);
 				robot.get()->setPosition(Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
 			}
 		}
