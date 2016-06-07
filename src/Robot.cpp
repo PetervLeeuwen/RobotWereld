@@ -383,18 +383,19 @@ void Robot::handleRequest( MessageASIO::Message& aMessage)
 
 void Robot::sendRobotPositionData()
 {
-	queueMessage("pos");
+	queueMessage(",pos," + std::to_string(robotId) + std::to_string(position.x) + std::to_string(position.y));
+	/*queueMessage("pos");
 	queueMessage("Id:" + std::to_string(robotId));
 	queueMessage("Pos_x:" + std::to_string(position.x));
 	queueMessage("Pos_y:" + std::to_string(position.y));
-	queueMessage("end");
+	queueMessage("end");*/
 }
 
 void Robot::getData(std::vector<std::string>& rawData){
 	std::string type = "";
 	std::vector<std::string> newData;
 	for(auto regel : rawData){
-		if(std::string("").compare(type) == 0)
+		/*if(std::string("").compare(type) == 0)
 		{
 			type = regel;
 			continue;
@@ -402,35 +403,41 @@ void Robot::getData(std::vector<std::string>& rawData){
 		if(std::string("end").compare(regel) == 0)
 		{
 			continue;
-		}
-		std::smatch match;
+		}*/
+		/*td::smatch match;
 		std::regex reg("\\:([a-zA-Z]+|[0-9]+)");
 		regex_search(regel, match, reg);
-		std::string match1(match[1]);
-		newData.push_back(match1);
+		std::string match1(match[1]);*/
+		std::size_t foundfirst = regel.find(",");
+		std::size_t foundsecond = regel.find(",", foundfirst + 1);
+		std::string str = regel.substr(foundfirst, foundsecond-foundfirst);
+		foundfirst = foundsecond;
+		newData.push_back(str);
 	}
-	if(std::string("robot").compare(type) == 0)
+	if(std::string("robot").compare(newData[0]) == 0)
 	{
 		Logger::log("Robot created");
-		RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
+		//RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
+		RobotWorld::getRobotWorld().newRobot(newData[1],Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true,false,std::atoi(newData[4].c_str()));
 	}
-	else if(std::string("wall").compare(type) == 0)
+	else if(std::string("wall").compare(newData[0]) == 0)
 	{
 		Logger::log("Wall created");
-		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),false,true);
+		//RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),false,true);
+		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())), Point(std::atoi(newData[3].c_str()),std::atoi(newData[4].c_str())),false,true);
 	}
-	else if(std::string("goal").compare(type) == 0)
+	else if(std::string("goal").compare(newData[0]) == 0)
 	{
 		Logger::log("Goal created");
-		RobotWorld::getRobotWorld().newGoal( newData[0], Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),false);
+		RobotWorld::getRobotWorld().newGoal( newData[1], Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),false);
 	}
-	else if(std::string("pos").compare(type) == 0)
+	else if(std::string("pos").compare(newData[0]) == 0)
 	{
 		for (auto robot : RobotWorld::getRobotWorld().getRobots())
 		{
-			if(robot.get()->robotId == std::atoi(newData[0].c_str()))
+			if(robot.get()->robotId == std::atoi(newData[1].c_str()))
 			{
-				robot.get()->setPosition(Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true);
+				robot.get()->setPosition(Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
 			}
 		}
 	}
