@@ -230,6 +230,7 @@ void Robot::startMoving()
 	GoalPtr goal = RobotWorld::getRobotWorld().getGoal();
 	std::thread newRobotThread( [this,goal]
 	{	drive(goal);});
+	robotThread.swap( newRobotThread);
 }
 /**
  *
@@ -382,9 +383,6 @@ void Robot::handleRequest( MessageASIO::Message& aMessage)
 
 void Robot::sendRobotPositionData()
 {
-	std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
-	std::string remotePort = ConfigFile::getInstance().getRemotePort();
-
 	queueMessage("pos");
 	queueMessage("Id:" + std::to_string(robotId));
 	queueMessage("Pos_x:" + std::to_string(position.x));
@@ -521,7 +519,7 @@ void Robot::drive(GoalPtr goal)
 		{
 			const Vertex& vertex = path[pathPoint+=speed];
 			front = Vector( vertex.asPoint(), position);
-			setPosition(vertex.asPoint());
+			setPosition(vertex.asPoint(),true);
 
 			if(arrived(goal))
 			{
@@ -536,7 +534,7 @@ void Robot::drive(GoalPtr goal)
 			}
 
 			notifyObservers();
-			std::this_thread::sleep_for( std::chrono::milliseconds( 50));
+			std::this_thread::sleep_for( std::chrono::milliseconds( 100));
 
 			// this should be either the last call in the loop or
 			// part of the while.
