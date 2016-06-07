@@ -364,26 +364,27 @@ void Robot::stopCommunicating()
 void Robot::handleRequest( MessageASIO::Message& aMessage)
 {
 	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
-	if(std::string("end").compare(aMessage.asString()) == 0)
-	{
-		gettingData = false;
+//	if(std::string("end").compare(aMessage.asString()) == 0)
+//	{
+//		gettingData = false;
+		rawRobotData.push_back(aMessage.asString());
 		getData(rawRobotData);
 		rawRobotData.clear();
-	}
-	else
-	{
-		gettingData = true;
-	}
+//	}
+//	else
+//	{
+//		gettingData = true;
+//	}
 
-	if(gettingData){
-		rawRobotData.push_back(aMessage.asString());
-	}
+//	if(gettingData){
+//		rawRobotData.push_back(aMessage.asString());
+//	}
 	aMessage.setBody( aMessage.asString() + " Server reponse");
 }
 
 void Robot::sendRobotPositionData()
 {
-	queueMessage(",pos," + std::to_string(robotId) + std::to_string(position.x) + std::to_string(position.y));
+	queueMessage(",pos," + std::to_string(robotId) + std::to_string(",") + std::to_string(position.x) + std::to_string(",") + std::to_string(position.y) + std::to_string(","));
 	/*queueMessage("pos");
 	queueMessage("Id:" + std::to_string(robotId));
 	queueMessage("Pos_x:" + std::to_string(position.x));
@@ -394,8 +395,8 @@ void Robot::sendRobotPositionData()
 void Robot::getData(std::vector<std::string>& rawData){
 	std::string type = "";
 	std::vector<std::string> newData;
-	std::size_t foundfirst;
-	std::size_t foundsecond;
+	std::size_t foundfirst = 0;
+	std::size_t foundsecond = 0;
 	for(auto regel : rawData){
 		/*if(std::string("").compare(type) == 0)
 		{
@@ -410,11 +411,13 @@ void Robot::getData(std::vector<std::string>& rawData){
 		std::regex reg("\\:([a-zA-Z]+|[0-9]+)");
 		regex_search(regel, match, reg);
 		std::string match1(match[1]);*/
-		while (regel.size() > foundsecond + 1) {
-			foundfirst = regel.find(",");
+		while (regel.size() >= foundsecond) {
+			Logger::log(regel);
+			foundfirst = regel.find(",", foundfirst);
 			foundsecond = regel.find(",", foundfirst + 1);
-			std::string str = regel.substr(foundfirst, foundsecond-foundfirst);
-			foundfirst = foundsecond-1;
+			std::string str = regel.substr(foundfirst + 1, foundsecond-foundfirst - 1);
+			foundfirst = foundsecond;
+			Logger::log(str);
 			newData.push_back(str);
 		}
 	}

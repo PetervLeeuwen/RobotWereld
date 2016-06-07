@@ -532,6 +532,7 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 												goal->getName() + std::to_string(",") +
 												std::to_string(goal->getPosition().x) + std::to_string(",") +
 												std::to_string(goal->getPosition().y) + std::to_string(","));
+				c1ient.dispatchMessage( message2);
 				/*MessageASIO::Message message3 (1, "end");
 				c1ient.dispatchMessage( message3);*/
 			}
