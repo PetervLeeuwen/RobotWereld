@@ -70,10 +70,10 @@ WayPointPtr RobotWorld::newWayPoint(	const std::string& aName,
  */
 GoalPtr RobotWorld::newGoal(	const std::string& aName,
 							const Point& aPosition /*= Point(-1,-1)*/,
-							bool aNotifyObservers /*= true*/,
-							bool original)
+							const bool aOriginal,
+							bool aNotifyObservers /*= true*/)
 {
-	GoalPtr goal( new Goal( aName, aPosition, original));
+	GoalPtr goal( new Goal( aName, aPosition, aOriginal));
 	goals.push_back( goal);
 	if (aNotifyObservers == true)
 	{
@@ -86,9 +86,10 @@ GoalPtr RobotWorld::newGoal(	const std::string& aName,
  */
 WallPtr RobotWorld::newWall(const Point& aPoint1,
 							const Point& aPoint2,
+							const bool aOriginal,
 							bool aNotifyObservers /*= true*/)
 {
-	WallPtr wall( new Wall( aPoint1, aPoint2));
+	WallPtr wall( new Wall( aPoint1, aPoint2, aOriginal));
 	walls.push_back( wall);
 	if (aNotifyObservers == true)
 	{
@@ -256,7 +257,7 @@ void RobotWorld::populatePart1()
 	RobotWorld::getRobotWorld().newRobot( "Thomas", Point( 450, 75),true,true);
 	RobotWorld::getRobotWorld().newWall( Point( 0, 340), Point( 180, 320),true);
 	RobotWorld::getRobotWorld().newWall( Point( 310, 340), Point( 500, 340),true);
-	RobotWorld::getRobotWorld().newGoal( "Life", Point( 225, 450),true);
+	RobotWorld::getRobotWorld().newGoal( "Life", Point( 225, 450),true,true);
 
 	notifyObservers();
 }
@@ -264,7 +265,7 @@ void RobotWorld::populatePart2()
 {
 	RobotWorld::getRobotWorld().newRobot( "Peter", Point( 75, 75),true,true);
 	RobotWorld::getRobotWorld().newWall( Point( 100, 240), Point( 400, 240),true);
-	RobotWorld::getRobotWorld().newGoal( "Hell", Point( 275, 450),true);
+	RobotWorld::getRobotWorld().newGoal( "Hell", Point( 275, 450),true,true);
 	notifyObservers();
 }
 /**
@@ -335,10 +336,6 @@ RobotWorld::~RobotWorld()
 	unpopulate();
 }
 
-void RobotWorld::sendRobotData()
-{
-}
-
 void RobotWorld::receiveRobotData(std::vector<RobotPtr> aRobot,
 		std::vector<WayPointPtr> aWayPoint, std::vector<GoalPtr> aGoal,
 		std::vector<WallPtr> aWall)
@@ -354,7 +351,6 @@ void RobotWorld::receiveRobotData(std::vector<RobotPtr> aRobot,
 	}
 	for(auto goal : aGoal)
 	{
-		goal.get()->original = false;
 		goals.push_back(goal);
 	}
 	for(auto wall : aWall)
@@ -383,24 +379,4 @@ RobotPtr RobotWorld::getRobot() const
 		}
 	}
 	return nullptr;
-}
-
-void RobotWorld::updateRobotPosition(long long id,Point location)
-{
-	for(RobotPtr robot : robots)
-	{
-		if(robot.get()->getRobotId() == id){
-			robot.get()->setPosition(location,true);
-		}
-	}
-}
-
-void RobotWorld::sendUpdateRobotPosition()
-{
-	for(RobotPtr robot : robots)
-	{
-		if(robot.get()->original){
-			//updateRobotPosition(robot.get()->getRobotId(),robot.get()->getPosition());
-		}
-	}
 }

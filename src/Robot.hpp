@@ -224,7 +224,11 @@ class Robot :	public AbstractAgent,
 		{
 			return robotId;
 		}
-
+		/**
+		 *
+		 */
+		void sendRobotPositionData();
+		void queueMessage(const std::string& message);
 		bool original;
 
 		//@}
@@ -266,12 +270,11 @@ class Robot :	public AbstractAgent,
 		std::thread robotThread;
 		mutable std::recursive_mutex robotMutex;
 
-		std::vector<std::string> rawRobotData;	//zero place: Robot
-											//first place: Name
-											//second place: PositionX
-											//third place: PositionY
-											//fourth place: End
+		std::vector<std::string> rawRobotData;
 		std::vector<std::string> robotData;
+
+		std::queue<MessageASIO::Message> messageQueue;
+		bool waitingForResponse;
 };
 
 #endif // ROBOT_HPP_

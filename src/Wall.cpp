@@ -4,8 +4,8 @@
 #include "Shape2DUtils.hpp"
 
 Wall::Wall( const Point& aPoint1,
-			const Point& aPoint2),
-			const bool aOriginal:
+			const Point& aPoint2,
+			const bool aOriginal):
 				point1( aPoint1),
 				point2( aPoint2),
 				original(aOriginal)
@@ -16,7 +16,7 @@ Wall::Wall( const Point& aPoint1,
 			const Point& aPoint2) :
 				point1( aPoint1),
 				point2( aPoint2),
-				original(false)
+				original(true)
 {
 }
 

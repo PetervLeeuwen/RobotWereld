@@ -20,7 +20,7 @@ class Goal : public WayPoint
 		 */
 		Goal(	const std::string& aName,
 				const Point& aPosition,
-				const bool& aOrginal = true);
+				const bool& aOriginal = true);
 		/**
 		 *
 		 */

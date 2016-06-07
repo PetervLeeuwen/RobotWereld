@@ -987,7 +987,7 @@ void RobotWorldCanvas::handleAddGoal( CommandEvent& UNUSEDPARAM(event))
 {
 	Logger::log( __PRETTY_FUNCTION__);
 
-	ShapePtr goal( new GoalShape( RobotWorld::getRobotWorld().newGoal( "Leon", popupPoint)));
+	ShapePtr goal( new GoalShape( RobotWorld::getRobotWorld().newGoal( "Leon", popupPoint,true)));
 	shapes.push_back( goal);
 	Refresh();
 }
@@ -1035,7 +1035,7 @@ void RobotWorldCanvas::handleAddWall( CommandEvent& UNUSEDPARAM(event))
 	RectangleShapePtr start( new RectangleShape( popupPoint));
 	RectangleShapePtr end( new RectangleShape( popupPoint + Point( 50, 50)));
 
-	ShapePtr wall( new WallShape( RobotWorld::getRobotWorld().newWall( start->getCentre(), end->getCentre(),false), start, end));
+	ShapePtr wall( new WallShape( RobotWorld::getRobotWorld().newWall( start->getCentre(), end->getCentre(),true,false), start, end));
 
 	shapes.push_back( wall);
 	shapes.push_back( start);

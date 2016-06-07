@@ -54,12 +54,12 @@ public:
 	 */
 	GoalPtr newGoal(const std::string& aName,
 			const Point& aPosition = Point(-1, -1),
-			bool aNotifyObservers = true,
-			bool original = true);
+			const bool original = true,
+			bool aNotifyObservers = true);
 	/**
 	 *
 	 */
-	WallPtr newWall(const Point& aPoint1, const Point& aPoint2,
+	WallPtr newWall(const Point& aPoint1, const Point& aPoint2, const bool aOriginal,
 			bool aNotifyObservers = true);
 	/**
 	 *
@@ -136,21 +136,9 @@ public:
 	/**
 	 *
 	 */
-	void sendRobotData();
-	/**
-	 *
-	 */
 	void receiveRobotData(std::vector<RobotPtr> aRobot,
 			std::vector<WayPointPtr> aWayPoint, std::vector<GoalPtr> aGoal,
 			std::vector<WallPtr> aWall);
-	/**
-	 *
-	 */
-	void updateRobotPosition(long long id,Point location);
-	/**
-	 *
-	 */
-	void sendUpdateRobotPosition();
 protected:
 	/**
 	 *

@@ -146,7 +146,14 @@ void Robot::setSize(	const Size& aSize,
 void Robot::setPosition(	const Point& aPosition,
 							bool aNotifyObservers /*= true*/)
 {
+	if(position == aPosition) return;
+
 	position = aPosition;
+	if(original)
+	{
+		sendRobotPositionData();
+	}
+	Logger::log("Set position");
 	if (aNotifyObservers == true)
 	{
 		notifyObservers();
@@ -192,7 +199,7 @@ void Robot::startActing()
 {
 	std::thread newRobotThread( [this]
 	{	stop = false;});
-	//robotThread.swap( newRobotThread);
+	robotThread.swap( newRobotThread);
 }
 /**
  *
@@ -373,6 +380,17 @@ void Robot::handleRequest( MessageASIO::Message& aMessage)
 	aMessage.setBody( aMessage.asString() + " Server reponse");
 }
 
+void Robot::sendRobotPositionData()
+{
+	std::string remoteIpAdres = ConfigFile::getInstance().getIpaddress();
+	std::string remotePort = ConfigFile::getInstance().getRemotePort();
+
+	queueMessage("pos");
+	queueMessage("Id:" + std::to_string(robotId));
+	queueMessage("Pos_x:" + std::to_string(position.x));
+	queueMessage("Pos_y:" + std::to_string(position.y));
+	queueMessage("end");
+}
 
 void Robot::getData(std::vector<std::string>& rawData){
 	std::string type = "";
@@ -398,15 +416,25 @@ void Robot::getData(std::vector<std::string>& rawData){
 		Logger::log("Robot created");
 		RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
 	}
-	if(std::string("wall").compare(type) == 0)
+	else if(std::string("wall").compare(type) == 0)
 	{
 		Logger::log("Wall created");
-		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
+		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),false,true);
 	}
-	if(std::string("goal").compare(type) == 0)
+	else if(std::string("goal").compare(type) == 0)
 	{
 		Logger::log("Goal created");
-		RobotWorld::getRobotWorld().newGoal( newData[0], Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false);
+		RobotWorld::getRobotWorld().newGoal( newData[0], Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),false);
+	}
+	else if(std::string("pos").compare(type) == 0)
+	{
+		for (auto robot : RobotWorld::getRobotWorld().getRobots())
+		{
+			if(robot.get()->robotId == std::atoi(newData[0].c_str()))
+			{
+				robot.get()->setPosition(Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true);
+			}
+		}
 	}
 	type = "";
 	newData.clear();
@@ -414,9 +442,36 @@ void Robot::getData(std::vector<std::string>& rawData){
 /**
  *
  */
-void Robot::handleResponse( MessageASIO::Message& aMessage)
+void Robot::handleResponse(MessageASIO::Message& aMessage)
 {
-	Logger::log( __PRETTY_FUNCTION__ + std::string( " not implemented, ") + aMessage.asString());
+	if (messageQueue.empty()) {
+		waitingForResponse = false;
+	} else {
+		auto msg = messageQueue.front();
+
+		MessageASIO::Client client(
+		    CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getRemotePort(),
+		    shared_from_this());
+		client.dispatchMessage(msg);
+
+		messageQueue.pop();
+	}
+}
+
+void Robot::queueMessage(const std::string& message)
+{
+	MessageASIO::Message msg(1, message);
+
+	if (waitingForResponse) {
+		messageQueue.push(msg);
+	} else {
+		waitingForResponse = true;
+
+		MessageASIO::Client client(
+		    CommunicationService::getCommunicationService().getIOService(), ConfigFile::getInstance().getIpaddress(), ConfigFile::getInstance().getRemotePort(),
+		    shared_from_this());
+		client.dispatchMessage(msg);
+	}
 }
 /**
  *
@@ -466,8 +521,7 @@ void Robot::drive(GoalPtr goal)
 		{
 			const Vertex& vertex = path[pathPoint+=speed];
 			front = Vector( vertex.asPoint(), position);
-			position.x = vertex.x;
-			position.y = vertex.y;
+			setPosition(vertex.asPoint());
 
 			if(arrived(goal))
 			{
@@ -482,7 +536,6 @@ void Robot::drive(GoalPtr goal)
 			}
 
 			notifyObservers();
-
 			std::this_thread::sleep_for( std::chrono::milliseconds( 50));
 
 			// this should be either the last call in the loop or

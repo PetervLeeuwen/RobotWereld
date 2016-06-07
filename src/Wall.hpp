@@ -17,6 +17,9 @@ class Wall : 	public ModelObject
 		 */
 		Wall(	const Point& aPoint1,
 				const Point& aPoint2);
+		Wall( 	const Point& aPoint1,
+				const Point& aPoint2,
+				const bool aOriginal);
 		/**
 		 *
 		 */
