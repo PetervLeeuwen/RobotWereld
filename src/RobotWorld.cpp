@@ -116,6 +116,7 @@ void RobotWorld::deleteRobot( 	RobotPtr aRobot,
 		}
 	}
 }
+
 /**
  *
  */

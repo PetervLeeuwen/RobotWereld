@@ -540,6 +540,9 @@ void Robot::drive(GoalPtr goal)
 			{
 				notifyObservers();
 				speed = 0;
+				if(goal->getName() == "Hell" || goal->getName() == "Life"){
+					setPosition(Point(999,999));
+				}
 				break;
 			}
 			if (collision())
