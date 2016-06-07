@@ -410,11 +410,13 @@ void Robot::getData(std::vector<std::string>& rawData){
 		std::regex reg("\\:([a-zA-Z]+|[0-9]+)");
 		regex_search(regel, match, reg);
 		std::string match1(match[1]);*/
-		foundfirst = regel.find(",");
-		foundsecond = regel.find(",", foundfirst + 1);
-		std::string str = regel.substr(foundfirst, foundsecond-foundfirst);
-		foundfirst = foundsecond-1;
-		newData.push_back(str);
+		while (regel.size() > foundsecond + 1) {
+			foundfirst = regel.find(",");
+			foundsecond = regel.find(",", foundfirst + 1);
+			std::string str = regel.substr(foundfirst, foundsecond-foundfirst);
+			foundfirst = foundsecond-1;
+			newData.push_back(str);
+		}
 	}
 	if(std::string("robot").compare(newData[0]) == 0)
 	{

@@ -486,7 +486,7 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 												std::to_string(robot->getName()) + std::to_string(",") +
 												std::to_string(robot->getPosition().x) + std::to_string(",") +
 												std::to_string(robot->getPosition().y) + std::to_string(",") +
-												std::to_string(robot->getRobotId()));
+												std::to_string(robot->getRobotId()) + std::to_string(","));
 				c1ient.dispatchMessage( message2);
 			}
 		}
@@ -509,7 +509,7 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 												std::to_string(wall->getPoint1().x) + std::to_string(",") +
 												std::to_string(wall->getPoint1().y) + std::to_string(",") +
 												std::to_string(wall->getPoint2().x) + std::to_string(",") +
-												std::to_string(wall->getPoint2().y));
+												std::to_string(wall->getPoint2().y) + std::to_string(","));
 				c1ient.dispatchMessage( message2);/*
 				MessageASIO::Message message3 (1, "end");
 				c1ient.dispatchMessage( message3);*/
@@ -531,7 +531,7 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 				MessageASIO::Message message2( 1, std::to_string(",goal") + std::to_string(",") +
 												goal->getName() + std::to_string(",") +
 												std::to_string(goal->getPosition().x) + std::to_string(",") +
-												std::to_string(goal->getPosition().y));
+												std::to_string(goal->getPosition().y) + std::to_string(","));
 				/*MessageASIO::Message message3 (1, "end");
 				c1ient.dispatchMessage( message3);*/
 			}
