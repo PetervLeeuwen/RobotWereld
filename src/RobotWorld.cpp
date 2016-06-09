@@ -119,6 +119,16 @@ void RobotWorld::deleteRobot( 	RobotPtr aRobot,
 
 void RobotWorld::deleteRobot(long long aRobotId)
 {
+//    robots.erase
+//    (
+//        remove_if
+//        (
+//            robots.begin(),
+//            robots.end(),
+//            [aRobotId](const RobotPtr& ps){ return ps.get()->getRobotId() == aRobotId; }
+//        ),
+//        robots.end()
+//    );
 
 //    Vector<RobotPtr> temp = Vector<RobotPtr>();
 //
