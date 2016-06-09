@@ -117,6 +117,22 @@ void RobotWorld::deleteRobot( 	RobotPtr aRobot,
 	}
 }
 
+void RobotWorld::deleteRobot(long long aRobotId)
+{
+
+//    Vector<RobotPtr> temp = Vector<RobotPtr>();
+//
+//	for(auto it = robots.begin(); it != robots.end(); ++it) {
+//		temp.push_back((*it).get());
+//		if( it != robots.end() && (*it).get()->getRobotId() == aRobotId)
+//		{
+//
+//			robots.erase(it);
+//			notifyObservers();
+//		}
+//	}
+}
+
 /**
  *
  */
@@ -254,7 +270,6 @@ const std::vector< WallPtr >& RobotWorld::getWalls() const
  */
 void RobotWorld::populatePart1()
 {
-
 	RobotWorld::getRobotWorld().newRobot( "Thomas", Point( 450, 75),true,true);
 	RobotWorld::getRobotWorld().newWall( Point( 0, 340), Point( 180, 320),true);
 	RobotWorld::getRobotWorld().newWall( Point( 310, 340), Point( 500, 340),true);

@@ -153,7 +153,6 @@ void Robot::setPosition(	const Point& aPosition,
 	{
 		sendRobotPositionData();
 	}
-	Logger::log("Set position");
 	if (aNotifyObservers == true)
 	{
 		notifyObservers();
@@ -339,11 +338,6 @@ void Robot::handleNotification()
  */
 void Robot::startCommunicating()
 {
-//	short port = 12345;
-//	if (MainApplication::isArgGiven( "-port"))
-//	{
-//		port = std::stoi(MainApplication::getArg( "-port").value);
-//	}
 	communicating = true;
 	CommunicationService::getCommunicationService().runRobotServer(this,std::stoi(ConfigFile::getInstance().getLocalPort()));
 }
@@ -384,12 +378,15 @@ void Robot::handleRequest( MessageASIO::Message& aMessage)
 
 void Robot::sendRobotPositionData()
 {
-	queueMessage(",pos," + std::to_string(robotId) + std::to_string(",") + std::to_string(position.x) + std::to_string(",") + std::to_string(position.y) + std::to_string(","));
-	/*queueMessage("pos");
-	queueMessage("Id:" + std::to_string(robotId));
-	queueMessage("Pos_x:" + std::to_string(position.x));
-	queueMessage("Pos_y:" + std::to_string(position.y));
-	queueMessage("end");*/
+	queueMessage(",pos," +
+			std::to_string(robotId) +
+			std::to_string(",") +
+			std::to_string(position.x) +
+			std::to_string(",") +
+			std::to_string(position.y) +
+			std::to_string(",") +
+			std::to_string(getSpeed()) +
+			std::to_string(","));
 }
 
 void Robot::getData(std::vector<std::string>& rawData){
@@ -398,39 +395,22 @@ void Robot::getData(std::vector<std::string>& rawData){
 	std::size_t foundfirst = 0;
 	std::size_t foundsecond = 0;
 	for(auto regel : rawData){
-		/*if(std::string("").compare(type) == 0)
-		{
-			type = regel;
-			continue;
-		}
-		if(std::string("end").compare(regel) == 0)
-		{
-			continue;
-		}*/
-		/*td::smatch match;
-		std::regex reg("\\:([a-zA-Z]+|[0-9]+)");
-		regex_search(regel, match, reg);
-		std::string match1(match[1]);*/
 		while (regel.size() >= foundsecond) {
-			Logger::log(regel);
 			foundfirst = regel.find(",", foundfirst);
 			foundsecond = regel.find(",", foundfirst + 1);
 			std::string str = regel.substr(foundfirst + 1, foundsecond-foundfirst - 1);
 			foundfirst = foundsecond;
-			Logger::log(str);
 			newData.push_back(str);
 		}
 	}
 	if(std::string("robot").compare(newData[0]) == 0)
 	{
 		Logger::log("Robot created");
-		//RobotWorld::getRobotWorld().newRobot(newData[0],Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())),true,false,std::atoi(newData[3].c_str()));
 		RobotWorld::getRobotWorld().newRobot(newData[1],Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true,false,std::atoi(newData[4].c_str()));
 	}
 	else if(std::string("wall").compare(newData[0]) == 0)
 	{
 		Logger::log("Wall created");
-		//RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[0].c_str()),std::atoi(newData[1].c_str())), Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),false,true);
 		RobotWorld::getRobotWorld().newWall( Point(std::atoi(newData[1].c_str()),std::atoi(newData[2].c_str())), Point(std::atoi(newData[3].c_str()),std::atoi(newData[4].c_str())),false,true);
 	}
 	else if(std::string("goal").compare(newData[0]) == 0)
@@ -446,6 +426,8 @@ void Robot::getData(std::vector<std::string>& rawData){
 			{
 				robot.get()->front = Vector(Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())), robot.get()->position);
 				robot.get()->setPosition(Point(std::atoi(newData[2].c_str()),std::atoi(newData[3].c_str())),true);
+				robot.get()->setSpeed(std::stof(newData[4].c_str()));
+//				Logger::log(std::string("Speed for ") + std::to_string(robot.get()->getName()) + std::string(" is: ") + std::to_string(robot.get()->getSpeed()));
 			}
 		}
 	}
@@ -540,14 +522,20 @@ void Robot::drive(GoalPtr goal)
 			{
 				notifyObservers();
 				speed = 0;
-				if(goal->getName() == "Hell" || goal->getName() == "Life"){
-					setPosition(Point(999,999));
-				}
+				sendRobotPositionData();
+//				if(goal->getName() == "Hell" || goal->getName() == "Life"){
+//					RobotWorld::getRobotWorld().deleteRobot(robotId);
+//				}
 				break;
 			}
 			if (collision())
 			{
+				Logger::log("a collision has been detected, atempting to calculate new path");
 				notifyObservers();
+//				stopActing();
+				startActing();
+				calculatePath();
+				startMoving();
 				break;
 			}
 

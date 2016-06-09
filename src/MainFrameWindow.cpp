@@ -470,18 +470,6 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 		{
 			if(robot->original)
 			{
-				/*MessageASIO::Message message( 1, "robot");
-				c1ient.dispatchMessage( message);
-				MessageASIO::Message message2( 1, "Name:" + to_string(robot->getName()));
-				c1ient.dispatchMessage( message2);
-				MessageASIO::Message message3( 1, "Pos_x:" + std::to_string(robot->getPosition().x));
-				c1ient.dispatchMessage( message3);
-				MessageASIO::Message message4( 1, "Pos_y:" + std::to_string(robot->getPosition().y));
-				c1ient.dispatchMessage( message4);
-				MessageASIO::Message message5( 1, "Id:" + std::to_string(robot->getRobotId()));
-				c1ient.dispatchMessage( message5);
-				MessageASIO::Message message6 (1, "end");
-				c1ient.dispatchMessage( message6);*/
 				MessageASIO::Message message2( 1, std::to_string(",robot") + std::to_string(",") +
 												std::to_string(robot->getName()) + std::to_string(",") +
 												std::to_string(robot->getPosition().x) + std::to_string(",") +
@@ -495,24 +483,12 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 		{
 			if(wall->isOriginal())
 			{
-				/*MessageASIO::Message message( 1, "wall");
-				c1ient.dispatchMessage( message);
-				MessageASIO::Message message2( 1, "pos_1x:" + std::to_string(wall->getPoint1().x));
-				c1ient.dispatchMessage( message2);
-				MessageASIO::Message message3( 1, "pos_1y:" + std::to_string(wall->getPoint1().y));
-				c1ient.dispatchMessage( message3);
-				MessageASIO::Message message4( 1, "pos_2x:" + std::to_string(wall->getPoint2().x));
-				c1ient.dispatchMessage( message4);
-				MessageASIO::Message message5( 1, "pos_2y:" + std::to_string(wall->getPoint2().y));
-				c1ient.dispatchMessage( message5);*/
 				MessageASIO::Message message2( 1, std::to_string(",wall") + std::to_string(",") +
 												std::to_string(wall->getPoint1().x) + std::to_string(",") +
 												std::to_string(wall->getPoint1().y) + std::to_string(",") +
 												std::to_string(wall->getPoint2().x) + std::to_string(",") +
 												std::to_string(wall->getPoint2().y) + std::to_string(","));
-				c1ient.dispatchMessage( message2);/*
-				MessageASIO::Message message3 (1, "end");
-				c1ient.dispatchMessage( message3);*/
+				c1ient.dispatchMessage( message2);
 			}
 		}
 		Logger::log("Sending Walls...");
@@ -520,21 +496,11 @@ void MainFrameWindow::OnButton8Clicked( CommandEvent& UNUSEDPARAM(anEvent))//Mer
 		{
 			if(goal->isOriginal())
 			{
-				/*MessageASIO::Message message( 1, "goal");
-				c1ient.dispatchMessage( message);
-				MessageASIO::Message message2( 1, "Name:" + goal->getName());
-				c1ient.dispatchMessage( message2);
-				MessageASIO::Message message3( 1, "Pos_y:" + std::to_string(goal->getPosition().x));
-				c1ient.dispatchMessage( message3);
-				MessageASIO::Message message4( 1, "Pos_x:" + std::to_string(goal->getPosition().y));
-				c1ient.dispatchMessage( message4);*/
 				MessageASIO::Message message2( 1, std::to_string(",goal") + std::to_string(",") +
 												goal->getName() + std::to_string(",") +
 												std::to_string(goal->getPosition().x) + std::to_string(",") +
 												std::to_string(goal->getPosition().y) + std::to_string(","));
 				c1ient.dispatchMessage( message2);
-				/*MessageASIO::Message message3 (1, "end");
-				c1ient.dispatchMessage( message3);*/
 			}
 		}
 		Logger::log("Sending goals...");

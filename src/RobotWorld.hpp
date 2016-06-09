@@ -68,6 +68,10 @@ public:
 	/**
 	 *
 	 */
+	void deleteRobot(long long aRobotId);
+	/**
+	 *
+	 */
 	void deleteWayPoint(WayPointPtr aWayPoint, bool aNotifyObservers = true);
 	/**
 	 *
